@@ -1,0 +1,15 @@
+.game-board {
+  margin: 0 auto;
+  width: 400px;
+  height: 400px;
+}
+
+.game-board__tile {
+  float: left;
+  border: 1px solid $accent-color;
+  @include transition(all, 200ms);
+}
+
+.game-board__tile:hover {
+  background-color: lighten($accent-color, 15%);
+}

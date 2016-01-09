@@ -1,0 +1,33 @@
+{
+  "name": "picross",
+  "version": "0.1.0",
+  "description": "A web version of the picross game",
+  "scripts": {
+    "dev": "webpack-dev-server --devtool source-map --hot --config webpack.config.dev.js",
+    "test": "mocha --compilers js:babel-core/register --require ./test/test-helper.js 'test/**/*.js' || true",
+    "test:watch": "npm run test -- --watch"
+  },
+  "dependencies": {
+    "babel-core": "^5.8.23",
+    "babel-loader": "^5.3.2",
+    "css-loader": "^0.17.0",
+    "file-loader": "^0.8.4",
+    "node-sass": "^3.3.2",
+    "normalize.css": "^3.0.3",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "sass-loader": "^2.0.1",
+    "style-loader": "^0.12.3",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^4.1.1",
+    "chai": "^3.3.0",
+    "eslint": "^1.10.2",
+    "eslint-plugin-react": "^3.3.1",
+    "jsdom": "^6.5.1",
+    "mocha": "^2.3.3",
+    "webpack-dev-server": "^1.10.1"
+  }
+}
