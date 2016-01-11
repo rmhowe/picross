@@ -1,36 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { highlightTile } from '../actions';
+import { highlightTile, fetchPuzzle, selectPuzzle } from '../actions';
 import GameBoard from '../components/GameBoard';
-import { httpGet } from '../util/ajax';
 
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { puzzle: null };
-
     this.highlightClick = this.highlightClick.bind(this);
   }
 
   componentDidMount() {
-    httpGet('/puzzles/easy/1.json').then((puzzleData) => {
-      const puzzle = JSON.parse(puzzleData);
-      this.setState({ puzzle });
-    });
+    this.props.dispatch(fetchPuzzle(1));
   }
 
-  highlightClick(tileCoords) {
-    this.props.dispatch(highlightTile(tileCoords));
+  highlightClick(puzzleId, tileCoords) {
+    this.props.dispatch(highlightTile(puzzleId, tileCoords));
   }
 
   render() {
-    const { tileStates } = this.props;
+    const { currentPuzzle, puzzles } = this.props;
     let board;
-    if (this.state.puzzle) {
+    if (puzzles[currentPuzzle] && Object.keys(puzzles[currentPuzzle].puzzleData).length > 0) {
       board = (
         <GameBoard
-          puzzle={this.state.puzzle}
-          tileStates={tileStates}
+          currentPuzzle={currentPuzzle}
+          puzzles={puzzles}
           highlightClick={this.highlightClick}
         />
       );
@@ -48,8 +42,8 @@ class App extends React.Component {
 
 function select(state) {
   return {
-    puzzle: state.puzzle,
-    tileStates: state.tileStates
+    currentPuzzle: state.currentPuzzle,
+    puzzles: state.puzzles
   };
 }
 
