@@ -1,25 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { highlightTile, emptyTile, fetchPuzzle, selectPuzzle } from '../actions';
-import { HIGHLIGHTED } from '../constants';
+import { modifyTile, fetchPuzzle, selectPuzzle } from '../actions';
+import { HIGHLIGHTED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 
 class App extends React.Component {
   constructor() {
     super();
-    this.tileClick = this.tileClick.bind(this);
+    this.tileChange = this.tileChange.bind(this);
   }
 
   componentDidMount() {
     this.props.dispatch(fetchPuzzle(1));
   }
 
-  tileClick(puzzleId, tileCoords) {
+  tileChange(puzzleId, tileCoords, rightClick, event) {
+    event.preventDefault();
     const { puzzles } = this.props;
-    if (!puzzles[puzzleId].tileStates[tileCoords]) {
-      this.props.dispatch(highlightTile(puzzleId, tileCoords));
+    if (rightClick && !puzzles[puzzleId].tileStates[tileCoords]) {
+      this.props.dispatch(modifyTile(puzzleId, tileCoords, BLOCK));
+    } else if (!puzzles[puzzleId].tileStates[tileCoords]) {
+      this.props.dispatch(modifyTile(puzzleId, tileCoords, HIGHLIGHT));
     } else {
-      this.props.dispatch(emptyTile(puzzleId, tileCoords));
+      this.props.dispatch(modifyTile(puzzleId, tileCoords, EMPTY));
     }
   }
 
@@ -31,7 +34,7 @@ class App extends React.Component {
         <GameBoard
           currentPuzzle={currentPuzzle}
           puzzles={puzzles}
-          tileClick={this.tileClick}
+          tileChange={this.tileChange}
         />
       );
     }

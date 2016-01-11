@@ -16,6 +16,10 @@
   background-color: lighten($accent-color, 15%);
 }
 
+.game-board__tile--blocked {
+  background-color: #e6e6e6;
+}
+
 .game-board__row-numbers {
   position: absolute;
   white-space: nowrap;
