@@ -1,7 +1,8 @@
 import React from 'react';
+import { HIGHLIGHTED, BLOCKED } from '../constants';
 
 export default class GameBoard extends React.Component {
-  generateBoard(puzzleId, puzzle, tileClick) {
+  generateBoard(puzzleId, puzzle, tileChange) {
     const board = [];
     const size = puzzle.rows.length;
     const tileSize = 100 / size;
@@ -39,15 +40,18 @@ export default class GameBoard extends React.Component {
         }
 
         let classes = "game-board__tile";
-        if (puzzle.tileStates[`${i},${j}`] === 'HIGHLIGHTED') {
+        if (puzzle.tileStates[`${i},${j}`] === HIGHLIGHTED) {
           classes += " game-board__tile--highlighted";
+        } else if (puzzle.tileStates[`${i},${j}`] === BLOCKED) {
+          classes += " game-board__tile--blocked";
         }
 
         row.push(
           <div
             className={classes}
             style={tileStyle}
-            onClick={tileClick.bind(this, puzzleId, `${i},${j}`)}
+            onClick={tileChange.bind(this, puzzleId, `${i},${j}`, false)}
+            onContextMenu={tileChange.bind(this, puzzleId, `${i},${j}`, true)}
           >
             {rowNumbers}
             {columnNumbers}
@@ -61,9 +65,9 @@ export default class GameBoard extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, puzzles, tileClick } = this.props;
+    const { currentPuzzle, puzzles, tileChange } = this.props;
     const puzzle = puzzles[currentPuzzle];
-    const board = this.generateBoard(currentPuzzle, puzzle, tileClick);
+    const board = this.generateBoard(currentPuzzle, puzzle, tileChange);
 
     return (
       <div className="game-board">
@@ -76,5 +80,5 @@ export default class GameBoard extends React.Component {
 GameBoard.propTypes = {
   currentPuzzle: React.PropTypes.number,
   puzzles: React.PropTypes.object,
-  tileClick: React.PropTypes.func
+  tileChange: React.PropTypes.func
 };

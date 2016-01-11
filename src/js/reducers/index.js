@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux';
 
 import {
-  HIGHLIGHT_TILE,
-  EMPTY_TILE,
+  MODIFY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE,
-  HIGHLIGHTED
+  HIGHLIGHTED,
+  BLOCKED,
+  EMPTY,
+  HIGHLIGHT,
+  BLOCK
 } from '../constants';
 
 function currentPuzzle(state = 1, action) {
@@ -22,8 +25,7 @@ function puzzles(state = {}, action) {
   switch (action.type) {
     case REQUEST_PUZZLE:
     case RECEIVE_PUZZLE:
-    case HIGHLIGHT_TILE:
-    case EMPTY_TILE:
+    case MODIFY_TILE:
       const id = action.payload.puzzleId;
       return Object.assign({}, state, {
         [id]: puzzle(state[id], action)
@@ -52,8 +54,7 @@ function puzzle(state = {
         rows: action.payload.rows,
         columns: action.payload.columns
       });
-    case HIGHLIGHT_TILE:
-    case EMPTY_TILE:
+    case MODIFY_TILE:
       return Object.assign({}, state, {
         tileStates: tileState(state.tileStates, action)
       });
@@ -64,14 +65,18 @@ function puzzle(state = {
 
 
 function tileState(state = {}, action) {
-  switch (action.type) {
-    case HIGHLIGHT_TILE:
+  switch (action.payload.modification) {
+    case HIGHLIGHT:
       return Object.assign({}, state, {
         [action.payload.tileCoords]: HIGHLIGHTED
       });
-    case EMPTY_TILE:
+    case EMPTY:
       return Object.assign({}, state, {
         [action.payload.tileCoords]: null
+      });
+    case BLOCK:
+      return Object.assign({}, state, {
+        [action.payload.tileCoords]: BLOCKED
       });
     default:
       return state;

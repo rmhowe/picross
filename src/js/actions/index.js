@@ -1,28 +1,18 @@
 import fetch from 'isomorphic-fetch';
 import {
-  HIGHLIGHT_TILE,
-  EMPTY_TILE,
+  MODIFY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE
 } from '../constants';
 
-export function highlightTile(puzzleId, tileCoords) {
+export function modifyTile(puzzleId, tileCoords, modification) {
   return {
-    type: HIGHLIGHT_TILE,
+    type: MODIFY_TILE,
     payload: {
       puzzleId,
-      tileCoords
-    }
-  };
-}
-
-export function emptyTile(puzzleId, tileCoords) {
-  return {
-    type: EMPTY_TILE,
-    payload: {
-      puzzleId,
-      tileCoords
+      tileCoords,
+      modification
     }
   };
 }
