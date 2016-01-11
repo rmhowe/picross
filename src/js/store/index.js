@@ -1,5 +1,14 @@
-import { createStore } from 'redux';
-import picrossApp from '../reducers';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from '../reducers';
 
-const store = createStore(picrossApp);
+const loggerMiddleware = createLogger();
+
+const createStoreWithMiddleware = applyMiddleware(
+  thunkMiddleware,
+  loggerMiddleware
+)(createStore);
+
+const store = createStoreWithMiddleware(rootReducer);
 export default store;
