@@ -1,8 +1,9 @@
 import React from 'react';
 
 export default class GameBoard extends React.Component {
-  generateBoard(size) {
+  generateBoard(puzzle, tileStates, highlightClick) {
     const board = [];
+    const size = puzzle.rows.length;
     const tileSize = 100 / size;
 
     for (let i = 0; i < size; i++) {
@@ -21,7 +22,18 @@ export default class GameBoard extends React.Component {
           tileStyle.borderLeft = 'none';
         }
 
-        row.push(<div className="game-board__tile" style={tileStyle}></div>);
+        let classes = "game-board__tile";
+        if (tileStates.get(`${i},${j}`) === 'HIGHLIGHTED') {
+          classes += " game-board__tile--highlighted";
+        }
+
+        row.push(
+          <div
+            className={classes}
+            style={tileStyle}
+            onClick={highlightClick.bind(this, `${i},${j}`)}
+          ></div>
+        );
       }
       board.push(row);
     }
@@ -30,8 +42,8 @@ export default class GameBoard extends React.Component {
   }
 
   render() {
-    const { size } = this.props;
-    const board = this.generateBoard(size);
+    const { puzzle, tileStates, highlightClick } = this.props;
+    const board = this.generateBoard(puzzle, tileStates, highlightClick);
 
     return (
       <div className="game-board">
@@ -42,5 +54,6 @@ export default class GameBoard extends React.Component {
 }
 
 GameBoard.propTypes = {
-  size: React.PropTypes.number
+  puzzle: React.PropTypes.object,
+  highlightedTiles: React.PropTypes.object
 };

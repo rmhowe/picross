@@ -1,15 +1,15 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { highlightTile } from '../actions';
 import GameBoard from '../components/GameBoard';
-
 import { httpGet } from '../util/ajax';
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      puzzle: null
-    };
+    this.state = { puzzle: null };
+
+    this.highlightClick = this.highlightClick.bind(this);
   }
 
   componentDidMount() {
@@ -19,10 +19,21 @@ export default class App extends React.Component {
     });
   }
 
+  highlightClick(tileCoords) {
+    this.props.dispatch(highlightTile(tileCoords));
+  }
+
   render() {
+    const { tileStates } = this.props;
     let board;
     if (this.state.puzzle) {
-      board = <GameBoard size={this.state.puzzle.rows.length}/>;
+      board = (
+        <GameBoard
+          puzzle={this.state.puzzle}
+          tileStates={tileStates}
+          highlightClick={this.highlightClick}
+        />
+      );
     }
 
     return (
@@ -34,3 +45,12 @@ export default class App extends React.Component {
     );
   }
 }
+
+function select(state) {
+  return {
+    puzzle: state.puzzle,
+    tileStates: state.tileStates
+  };
+}
+
+export default connect(select)(App);
