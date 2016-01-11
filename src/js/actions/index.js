@@ -34,12 +34,14 @@ export function requestPuzzle(puzzleId) {
   };
 }
 
-export function receivePuzzle(puzzleId, puzzleData) {
+export function receivePuzzle(puzzleId, title, rows, columns) {
   return {
     type: RECEIVE_PUZZLE,
     payload: {
       puzzleId,
-      puzzleData
+      title,
+      rows,
+      columns
     }
   };
 }
@@ -50,7 +52,7 @@ export function fetchPuzzle(puzzleId) {
     return fetch(`/puzzles/${puzzleId}.json`)
       .then((response) => response.json())
       .then((puzzleData) => {
-        dispatch(receivePuzzle(puzzleId, puzzleData));
+        dispatch(receivePuzzle(puzzleId, puzzleData.title, puzzleData.rows, puzzleData.columns));
       });
   };
 }

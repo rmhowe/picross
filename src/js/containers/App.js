@@ -20,7 +20,7 @@ class App extends React.Component {
   render() {
     const { currentPuzzle, puzzles } = this.props;
     let board;
-    if (puzzles[currentPuzzle] && Object.keys(puzzles[currentPuzzle].puzzleData).length > 0) {
+    if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       board = (
         <GameBoard
           currentPuzzle={currentPuzzle}
