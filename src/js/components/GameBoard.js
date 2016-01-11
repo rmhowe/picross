@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default class GameBoard extends React.Component {
-  generateBoard(puzzleId, puzzle, highlightClick) {
+  generateBoard(puzzleId, puzzle, tileClick) {
     const board = [];
     const size = puzzle.rows.length;
     const tileSize = 100 / size;
@@ -22,6 +22,22 @@ export default class GameBoard extends React.Component {
           tileStyle.borderLeft = 'none';
         }
 
+        let rowNumbers;
+        if (j === 0) {
+          const rowNumbersSpaced = puzzle.rows[i].reduce((prev, curr) => {
+            return `${prev} ${curr}`;
+          }, "");
+          rowNumbers = <span className="game-board__row-numbers">{rowNumbersSpaced}</span>;
+        }
+
+        let columnNumbers;
+        if (i === size - 1) {
+          const columnNumbersSpaced = puzzle.columns[j].reduce((prev, curr) => {
+            return `${prev} ${curr}`;
+          }, "");
+          columnNumbers = <span className="game-board__column-numbers">{columnNumbersSpaced}</span>;
+        }
+
         let classes = "game-board__tile";
         if (puzzle.tileStates[`${i},${j}`] === 'HIGHLIGHTED') {
           classes += " game-board__tile--highlighted";
@@ -31,8 +47,11 @@ export default class GameBoard extends React.Component {
           <div
             className={classes}
             style={tileStyle}
-            onClick={highlightClick.bind(this, puzzleId, `${i},${j}`)}
-          ></div>
+            onClick={tileClick.bind(this, puzzleId, `${i},${j}`)}
+          >
+            {rowNumbers}
+            {columnNumbers}
+          </div>
         );
       }
       board.push(row);
@@ -42,9 +61,9 @@ export default class GameBoard extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, puzzles, highlightClick } = this.props;
+    const { currentPuzzle, puzzles, tileClick } = this.props;
     const puzzle = puzzles[currentPuzzle];
-    const board = this.generateBoard(currentPuzzle, puzzle, highlightClick);
+    const board = this.generateBoard(currentPuzzle, puzzle, tileClick);
 
     return (
       <div className="game-board">
@@ -55,6 +74,7 @@ export default class GameBoard extends React.Component {
 }
 
 GameBoard.propTypes = {
-  puzzle: React.PropTypes.object,
-  highlightedTiles: React.PropTypes.object
+  currentPuzzle: React.PropTypes.number,
+  puzzles: React.PropTypes.object,
+  tileClick: React.PropTypes.func
 };

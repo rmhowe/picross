@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import {
   HIGHLIGHT_TILE,
+  EMPTY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE,
@@ -22,6 +23,7 @@ function puzzles(state = {}, action) {
     case REQUEST_PUZZLE:
     case RECEIVE_PUZZLE:
     case HIGHLIGHT_TILE:
+    case EMPTY_TILE:
       const id = action.payload.puzzleId;
       return Object.assign({}, state, {
         [id]: puzzle(state[id], action)
@@ -51,6 +53,7 @@ function puzzle(state = {
         columns: action.payload.columns
       });
     case HIGHLIGHT_TILE:
+    case EMPTY_TILE:
       return Object.assign({}, state, {
         tileStates: tileState(state.tileStates, action)
       });
@@ -65,6 +68,10 @@ function tileState(state = {}, action) {
     case HIGHLIGHT_TILE:
       return Object.assign({}, state, {
         [action.payload.tileCoords]: HIGHLIGHTED
+      });
+    case EMPTY_TILE:
+      return Object.assign({}, state, {
+        [action.payload.tileCoords]: null
       });
     default:
       return state;
