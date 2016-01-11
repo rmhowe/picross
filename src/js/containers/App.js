@@ -1,20 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { highlightTile, fetchPuzzle, selectPuzzle } from '../actions';
+import { highlightTile, emptyTile, fetchPuzzle, selectPuzzle } from '../actions';
+import { HIGHLIGHTED } from '../constants';
 import GameBoard from '../components/GameBoard';
 
 class App extends React.Component {
   constructor() {
     super();
-    this.highlightClick = this.highlightClick.bind(this);
+    this.tileClick = this.tileClick.bind(this);
   }
 
   componentDidMount() {
     this.props.dispatch(fetchPuzzle(1));
   }
 
-  highlightClick(puzzleId, tileCoords) {
-    this.props.dispatch(highlightTile(puzzleId, tileCoords));
+  tileClick(puzzleId, tileCoords) {
+    const { puzzles } = this.props;
+    if (!puzzles[puzzleId].tileStates[tileCoords]) {
+      this.props.dispatch(highlightTile(puzzleId, tileCoords));
+    } else {
+      this.props.dispatch(emptyTile(puzzleId, tileCoords));
+    }
   }
 
   render() {
@@ -25,7 +31,7 @@ class App extends React.Component {
         <GameBoard
           currentPuzzle={currentPuzzle}
           puzzles={puzzles}
-          highlightClick={this.highlightClick}
+          tileClick={this.tileClick}
         />
       );
     }

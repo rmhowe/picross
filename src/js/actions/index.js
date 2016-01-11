@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import {
   HIGHLIGHT_TILE,
+  EMPTY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE
@@ -9,6 +10,16 @@ import {
 export function highlightTile(puzzleId, tileCoords) {
   return {
     type: HIGHLIGHT_TILE,
+    payload: {
+      puzzleId,
+      tileCoords
+    }
+  };
+}
+
+export function emptyTile(puzzleId, tileCoords) {
+  return {
+    type: EMPTY_TILE,
     payload: {
       puzzleId,
       tileCoords
