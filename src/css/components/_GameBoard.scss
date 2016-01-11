@@ -10,6 +10,7 @@
   @include transition(all, 200ms);
 }
 
-.game-board__tile:hover {
+.game-board__tile:hover,
+.game-board__tile--highlighted {
   background-color: lighten($accent-color, 15%);
 }
