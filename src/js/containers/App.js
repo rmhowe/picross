@@ -1,28 +1,42 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { modifyTile, fetchPuzzle, selectPuzzle } from '../actions';
+import { HIGHLIGHTED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 
-import { httpGet } from '../util/ajax';
-
-export default class App extends React.Component {
+class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      puzzle: null
-    };
+    this.tileChange = this.tileChange.bind(this);
   }
 
   componentDidMount() {
-    httpGet('/puzzles/easy/1.json').then((puzzleData) => {
-      const puzzle = JSON.parse(puzzleData);
-      this.setState({ puzzle });
-    });
+    this.props.dispatch(fetchPuzzle(1));
+  }
+
+  tileChange(puzzleId, tileCoords, rightClick, event) {
+    event.preventDefault();
+    const { puzzles } = this.props;
+    if (rightClick && !puzzles[puzzleId].tileStates[tileCoords]) {
+      this.props.dispatch(modifyTile(puzzleId, tileCoords, BLOCK));
+    } else if (!puzzles[puzzleId].tileStates[tileCoords]) {
+      this.props.dispatch(modifyTile(puzzleId, tileCoords, HIGHLIGHT));
+    } else {
+      this.props.dispatch(modifyTile(puzzleId, tileCoords, EMPTY));
+    }
   }
 
   render() {
+    const { currentPuzzle, puzzles } = this.props;
     let board;
-    if (this.state.puzzle) {
-      board = <GameBoard size={this.state.puzzle.rows.length}/>;
+    if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
+      board = (
+        <GameBoard
+          currentPuzzle={currentPuzzle}
+          puzzles={puzzles}
+          tileChange={this.tileChange}
+        />
+      );
     }
 
     return (
@@ -34,3 +48,12 @@ export default class App extends React.Component {
     );
   }
 }
+
+function select(state) {
+  return {
+    currentPuzzle: state.currentPuzzle,
+    puzzles: state.puzzles
+  };
+}
+
+export default connect(select)(App);
