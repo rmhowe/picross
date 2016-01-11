@@ -3,7 +3,7 @@ import React from 'react';
 export default class GameBoard extends React.Component {
   generateBoard(puzzleId, puzzle, highlightClick) {
     const board = [];
-    const size = puzzle.puzzleData.rows.length;
+    const size = puzzle.rows.length;
     const tileSize = 100 / size;
 
     for (let i = 0; i < size; i++) {
