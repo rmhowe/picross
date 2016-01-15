@@ -47,7 +47,6 @@ function puzzles(state = {}, action) {
 
 function puzzle(state = {
   isFetching: false,
-  title: "",
   rows: [],
   columns: [],
   tileStates: {}
@@ -60,7 +59,6 @@ function puzzle(state = {
     case RECEIVE_PUZZLE:
       return Object.assign({}, state, {
         isFetching: false,
-        title: action.payload.title,
         rows: action.payload.rows,
         columns: action.payload.columns
       });

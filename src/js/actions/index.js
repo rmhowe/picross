@@ -41,10 +41,10 @@ export function fetchPuzzle(puzzleId) {
   return (dispatch) => {
     dispatch(requestPuzzle(puzzleId));
     return fetch(`/puzzles/${puzzleId}.json`)
-    .then((response) => response.json())
-    .then((puzzleData) => {
-      dispatch(receivePuzzle(puzzleId, puzzleData.title, puzzleData.rows, puzzleData.columns));
-    });
+      .then((response) => response.json())
+      .then((puzzleData) => {
+        dispatch(receivePuzzle(puzzleId, puzzleData.title, puzzleData.rows, puzzleData.columns));
+      });
   };
 }
 
