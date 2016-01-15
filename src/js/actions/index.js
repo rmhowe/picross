@@ -1,21 +1,11 @@
 import fetch from 'isomorphic-fetch';
 import {
-  MODIFY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
-  RECEIVE_PUZZLE
+  RECEIVE_PUZZLE,
+  SELECT_TOOL,
+  MODIFY_TILE
 } from '../constants';
-
-export function modifyTile(puzzleId, tileCoords, modification) {
-  return {
-    type: MODIFY_TILE,
-    payload: {
-      puzzleId,
-      tileCoords,
-      modification
-    }
-  };
-}
 
 export function selectPuzzle(puzzleId) {
   return {
@@ -51,9 +41,29 @@ export function fetchPuzzle(puzzleId) {
   return (dispatch) => {
     dispatch(requestPuzzle(puzzleId));
     return fetch(`/puzzles/${puzzleId}.json`)
-      .then((response) => response.json())
-      .then((puzzleData) => {
-        dispatch(receivePuzzle(puzzleId, puzzleData.title, puzzleData.rows, puzzleData.columns));
-      });
+    .then((response) => response.json())
+    .then((puzzleData) => {
+      dispatch(receivePuzzle(puzzleId, puzzleData.title, puzzleData.rows, puzzleData.columns));
+    });
+  };
+}
+
+export function selectTool(tool) {
+  return {
+    type: SELECT_TOOL,
+    payload: {
+      tool
+    }
+  };
+}
+
+export function modifyTile(puzzleId, tileCoords, modification) {
+  return {
+    type: MODIFY_TILE,
+    payload: {
+      puzzleId,
+      tileCoords,
+      modification
+    }
   };
 }

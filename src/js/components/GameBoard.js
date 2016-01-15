@@ -20,9 +20,9 @@ export default class GameBoard extends React.Component {
 
   handleDragStart(i, j, event) {
     this.setState({ dragging: true });
-    
-    const { currentPuzzle, puzzles, handleTileChange } = this.props;
-    handleTileChange(currentPuzzle, `${i},${j}`, false, event);
+
+    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
+    handleTileChange(currentPuzzle, `${i},${j}`, currentTool, event);
   }
 
   handleDragEnd() {
@@ -30,9 +30,9 @@ export default class GameBoard extends React.Component {
   }
 
   handleDrag(i, j, event) {
-    const { currentPuzzle, puzzles, handleTileChange } = this.props;
+    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
     if (this.state.dragging) {
-      handleTileChange(currentPuzzle, `${i},${j}`, false, event);
+      handleTileChange(currentPuzzle, `${i},${j}`, currentTool, event);
     }
   }
 
@@ -67,8 +67,6 @@ export default class GameBoard extends React.Component {
           <div
             className={classes}
             style={tileStyle}
-            onClick={handleTileChange.bind(this, puzzleId, `${i},${j}`, false)}
-            onContextMenu={handleTileChange.bind(this, puzzleId, `${i},${j}`, true)}
             onMouseOver={this.handleDrag.bind(this, i, j)}
             onMouseDown={this.handleDragStart.bind(this, i, j)}
           >
