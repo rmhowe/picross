@@ -7,14 +7,14 @@ import GameBoard from '../components/GameBoard';
 class App extends React.Component {
   constructor() {
     super();
-    this.tileChange = this.tileChange.bind(this);
+    this.handleTileChange = this.handleTileChange.bind(this);
   }
 
   componentDidMount() {
     this.props.dispatch(fetchPuzzle(1));
   }
 
-  tileChange(puzzleId, tileCoords, rightClick, event) {
+  handleTileChange(puzzleId, tileCoords, rightClick, event) {
     event.preventDefault();
     const { puzzles } = this.props;
     if (rightClick && !puzzles[puzzleId].tileStates[tileCoords]) {
@@ -34,7 +34,7 @@ class App extends React.Component {
         <GameBoard
           currentPuzzle={currentPuzzle}
           puzzles={puzzles}
-          tileChange={this.tileChange}
+          handleTileChange={this.handleTileChange}
         />
       );
     }
