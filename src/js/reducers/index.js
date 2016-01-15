@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 
 import {
-  MODIFY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE,
+  SELECT_TOOL,
+  MODIFY_TILE,
   HIGHLIGHTED,
   BLOCKED,
   EMPTY,
@@ -16,6 +17,15 @@ function currentPuzzle(state = 1, action) {
   switch (action.type) {
     case SELECT_PUZZLE:
       return action.payload.puzzleId;
+    default:
+      return state;
+  }
+}
+
+function currentTool(state = HIGHLIGHT, action) {
+  switch (action.type) {
+    case SELECT_TOOL:
+      return action.payload.tool;
     default:
       return state;
   }
@@ -37,7 +47,6 @@ function puzzles(state = {}, action) {
 
 function puzzle(state = {
   isFetching: false,
-  title: "",
   rows: [],
   columns: [],
   tileStates: {}
@@ -50,7 +59,6 @@ function puzzle(state = {
     case RECEIVE_PUZZLE:
       return Object.assign({}, state, {
         isFetching: false,
-        title: action.payload.title,
         rows: action.payload.rows,
         columns: action.payload.columns
       });
@@ -63,16 +71,15 @@ function puzzle(state = {
   }
 }
 
-
 function tileState(state = {}, action) {
   switch (action.payload.modification) {
-    case HIGHLIGHT:
-      return Object.assign({}, state, {
-        [action.payload.tileCoords]: HIGHLIGHTED
-      });
     case EMPTY:
       return Object.assign({}, state, {
         [action.payload.tileCoords]: null
+      });
+    case HIGHLIGHT:
+      return Object.assign({}, state, {
+        [action.payload.tileCoords]: HIGHLIGHTED
       });
     case BLOCK:
       return Object.assign({}, state, {
@@ -85,6 +92,7 @@ function tileState(state = {}, action) {
 
 const rootReducer = combineReducers({
   currentPuzzle,
+  currentTool,
   puzzles
 });
 export default rootReducer;

@@ -2,7 +2,41 @@ import React from 'react';
 import { HIGHLIGHTED, BLOCKED } from '../constants';
 
 export default class GameBoard extends React.Component {
-  generateBoard(puzzleId, puzzle, tileChange) {
+  constructor(props) {
+    super(props);
+    this.state = { dragging: false };
+    this.handleDragStart = this.handleDragStart.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+  }
+
+  componentDidMount() {
+    document.body.addEventListener('mouseup', this.handleDragEnd);
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('mouseup', this.handleDragEnd);
+  }
+
+  handleDragStart(i, j, event) {
+    this.setState({ dragging: true });
+
+    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
+    handleTileChange(currentPuzzle, `${i},${j}`, currentTool, event);
+  }
+
+  handleDragEnd() {
+    this.setState({ dragging: false });
+  }
+
+  handleDrag(i, j, event) {
+    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
+    if (this.state.dragging) {
+      handleTileChange(currentPuzzle, `${i},${j}`, currentTool, event);
+    }
+  }
+
+  generateBoard(puzzleId, puzzle, handleTileChange) {
     const board = [];
     const size = puzzle.rows.length;
     const tileSize = 100 / size;
@@ -10,33 +44,16 @@ export default class GameBoard extends React.Component {
     for (let i = 0; i < size; i++) {
       const row = [];
       for (let j = 0; j < size; j++) {
-        const tileStyle = {
-          width: `${tileSize}%`,
-          height: `${tileSize}%`
-        };
-
-        if (i % 5 !== 0) {
-          tileStyle.borderTop = 'none';
-        }
-
-        if (j % 5 !== 0) {
-          tileStyle.borderLeft = 'none';
-        }
+        const tileStyle = this.getTileStyle(tileSize, i, j);
 
         let rowNumbers;
         if (j === 0) {
-          const rowNumbersSpaced = puzzle.rows[i].reduce((prev, curr) => {
-            return `${prev} ${curr}`;
-          }, "");
-          rowNumbers = <span className="game-board__row-numbers">{rowNumbersSpaced}</span>;
+          rowNumbers = this.getRowNumbers(puzzle.rows[i]);
         }
 
         let columnNumbers;
         if (i === size - 1) {
-          const columnNumbersSpaced = puzzle.columns[j].reduce((prev, curr) => {
-            return `${prev} ${curr}`;
-          }, "");
-          columnNumbers = <span className="game-board__column-numbers">{columnNumbersSpaced}</span>;
+          columnNumbers = this.getColumnNumbers(puzzle.columns[j]);
         }
 
         let classes = "game-board__tile";
@@ -50,8 +67,8 @@ export default class GameBoard extends React.Component {
           <div
             className={classes}
             style={tileStyle}
-            onClick={tileChange.bind(this, puzzleId, `${i},${j}`, false)}
-            onContextMenu={tileChange.bind(this, puzzleId, `${i},${j}`, true)}
+            onMouseOver={this.handleDrag.bind(this, i, j)}
+            onMouseDown={this.handleDragStart.bind(this, i, j)}
           >
             {rowNumbers}
             {columnNumbers}
@@ -64,13 +81,46 @@ export default class GameBoard extends React.Component {
     return board;
   }
 
+  getTileStyle(tileSize, i, j) {
+    const tileStyle = {
+      width: `${tileSize}%`,
+      height: `${tileSize}%`
+    };
+
+    if (i % 5 !== 0) {
+      tileStyle.borderTop = 'none';
+    }
+
+    if (j % 5 !== 0) {
+      tileStyle.borderLeft = 'none';
+    }
+
+    return tileStyle;
+  }
+
+  getRowNumbers(rowNumbers) {
+    const rowNumbersSpaced = rowNumbers.reduce((prev, curr) => {
+      return `${prev} ${curr}`;
+    }, "");
+    return <span className="game-board__row-numbers">{rowNumbersSpaced}</span>;
+  }
+
+  getColumnNumbers(columnNumbers) {
+    const columnNumbersSpaced = columnNumbers.reduce((prev, curr) => {
+      return `${prev} ${curr}`;
+    }, "");
+    return <span className="game-board__column-numbers">{columnNumbersSpaced}</span>;
+  }
+
   render() {
-    const { currentPuzzle, puzzles, tileChange } = this.props;
+    const { currentPuzzle, puzzles, handleTileChange } = this.props;
     const puzzle = puzzles[currentPuzzle];
-    const board = this.generateBoard(currentPuzzle, puzzle, tileChange);
+    const board = this.generateBoard(currentPuzzle, puzzle, handleTileChange);
 
     return (
-      <div className="game-board">
+      <div
+        className="game-board"
+      >
         {board}
       </div>
     );
@@ -80,5 +130,5 @@ export default class GameBoard extends React.Component {
 GameBoard.propTypes = {
   currentPuzzle: React.PropTypes.number,
   puzzles: React.PropTypes.object,
-  tileChange: React.PropTypes.func
+  handleTileChange: React.PropTypes.func
 };
