@@ -18,13 +18,14 @@ export default class GameBoard extends React.Component {
     document.body.removeEventListener('mouseup', this.handleDragEnd);
   }
 
-  handleDragStart() {
-    console.log('dragging started');
+  handleDragStart(i, j, event) {
     this.setState({ dragging: true });
+    
+    const { currentPuzzle, puzzles, handleTileChange } = this.props;
+    handleTileChange(currentPuzzle, `${i},${j}`, false, event);
   }
 
   handleDragEnd() {
-    console.log('dragging finished');
     this.setState({ dragging: false });
   }
 
@@ -68,7 +69,8 @@ export default class GameBoard extends React.Component {
             style={tileStyle}
             onClick={handleTileChange.bind(this, puzzleId, `${i},${j}`, false)}
             onContextMenu={handleTileChange.bind(this, puzzleId, `${i},${j}`, true)}
-            onMouseMove={this.handleDrag.bind(this, i, j)}
+            onMouseOver={this.handleDrag.bind(this, i, j)}
+            onMouseDown={this.handleDragStart.bind(this, i, j)}
           >
             {rowNumbers}
             {columnNumbers}
@@ -120,7 +122,6 @@ export default class GameBoard extends React.Component {
     return (
       <div
         className="game-board"
-        onMouseDown={this.handleDragStart}
       >
         {board}
       </div>
