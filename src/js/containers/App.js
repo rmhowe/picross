@@ -14,10 +14,11 @@ class App extends React.Component {
     this.props.dispatch(fetchPuzzle(1));
   }
 
-  handleTileChange(puzzleId, tileCoords, rightClick, event) {
+  handleTileChange(puzzleId, tileCoords, currentTool, event) {
     event.preventDefault();
+    console.log(currentTool);
     const { puzzles } = this.props;
-    if (rightClick && !puzzles[puzzleId].tileStates[tileCoords]) {
+    if (currentTool === BLOCK && !puzzles[puzzleId].tileStates[tileCoords]) {
       this.props.dispatch(modifyTile(puzzleId, tileCoords, BLOCK));
     } else if (!puzzles[puzzleId].tileStates[tileCoords]) {
       this.props.dispatch(modifyTile(puzzleId, tileCoords, HIGHLIGHT));
@@ -27,12 +28,13 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, puzzles } = this.props;
+    const { currentPuzzle, currentTool, puzzles } = this.props;
     let board;
     if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       board = (
         <GameBoard
           currentPuzzle={currentPuzzle}
+          currentTool={currentTool}
           puzzles={puzzles}
           handleTileChange={this.handleTileChange}
         />
@@ -52,6 +54,7 @@ class App extends React.Component {
 function select(state) {
   return {
     currentPuzzle: state.currentPuzzle,
+    currentTool: state.currentTool,
     puzzles: state.puzzles
   };
 }

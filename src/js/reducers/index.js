@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 
 import {
-  MODIFY_TILE,
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE,
+  SELECT_TOOL,
+  MODIFY_TILE,
   HIGHLIGHTED,
   BLOCKED,
   EMPTY,
@@ -16,6 +17,15 @@ function currentPuzzle(state = 1, action) {
   switch (action.type) {
     case SELECT_PUZZLE:
       return action.payload.puzzleId;
+    default:
+      return state;
+  }
+}
+
+function currentTool(state = HIGHLIGHT, action) {
+  switch (action.type) {
+    case SELECT_TOOL:
+      return action.payload.tool;
     default:
       return state;
   }
@@ -85,6 +95,7 @@ function tileState(state = {}, action) {
 
 const rootReducer = combineReducers({
   currentPuzzle,
+  currentTool,
   puzzles
 });
 export default rootReducer;
