@@ -4,17 +4,21 @@ import { modifyTile, fetchPuzzle, selectPuzzle, selectTool } from '../actions';
 import { HIGHLIGHTED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 import ToolSelector from '../components/ToolSelector';
+import PuzzleSelector from '../components/PuzzleSelector';
 
 class App extends React.Component {
   constructor() {
     super();
     this.handleToolChange = this.handleToolChange.bind(this);
+    this.handlePuzzleChange = this.handlePuzzleChange.bind(this);
     this.handleTileChange = this.handleTileChange.bind(this);
     this.handleTabPress = this.handleTabPress.bind(this);
   }
 
   componentDidMount() {
     this.props.dispatch(fetchPuzzle(1));
+    this.props.dispatch(fetchPuzzle(2));
+    this.props.dispatch(fetchPuzzle(3));
   }
 
   handleToolChange(newTool) {
@@ -35,6 +39,15 @@ class App extends React.Component {
     }
   }
 
+  handlePuzzleChange(event) {
+    const { puzzles, dispatch } = this.props;
+    const newPuzzle = parseInt(event.target.value);
+    if (!puzzles[newPuzzle]) {
+      dispatch(fetchPuzzle(newPuzzle));
+    }
+    dispatch(selectPuzzle(newPuzzle));
+  }
+
   handleTileChange(puzzleId, tileCoords, currentTool, event) {
     event.preventDefault();
     const { puzzles, dispatch } = this.props;
@@ -51,11 +64,19 @@ class App extends React.Component {
     const { currentPuzzle, currentTool, puzzles } = this.props;
     let board;
     let toolSelector;
+    let puzzleSelector;
     if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       toolSelector = (
         <ToolSelector
           currentTool={currentTool}
           handleToolChange={this.handleToolChange}
+        />
+      );
+
+      puzzleSelector = (
+        <PuzzleSelector
+          currentPuzzle={currentPuzzle}
+          handlePuzzleChange={this.handlePuzzleChange}
         />
       );
 
@@ -76,6 +97,7 @@ class App extends React.Component {
       >
         <div className="container">
           {toolSelector}
+          {puzzleSelector}
           {board}
         </div>
       </div>
