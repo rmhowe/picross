@@ -73,16 +73,15 @@ function puzzle(state = {
   }
 }
 
-
 function tileState(state = {}, action) {
   switch (action.payload.modification) {
-    case HIGHLIGHT:
-      return Object.assign({}, state, {
-        [action.payload.tileCoords]: HIGHLIGHTED
-      });
     case EMPTY:
       return Object.assign({}, state, {
         [action.payload.tileCoords]: null
+      });
+    case HIGHLIGHT:
+      return Object.assign({}, state, {
+        [action.payload.tileCoords]: HIGHLIGHTED
       });
     case BLOCK:
       return Object.assign({}, state, {
