@@ -16,9 +16,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchPuzzle(1));
-    this.props.dispatch(fetchPuzzle(2));
-    this.props.dispatch(fetchPuzzle(3));
+    for (let i = 1; i <= 10; i++) {
+      this.props.dispatch(fetchPuzzle(i));
+    }
   }
 
   handleToolChange(newTool) {
