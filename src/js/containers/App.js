@@ -1,10 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { modifyTile, fetchPuzzle, fetchTileStates, saveTileState, selectPuzzle, selectTool } from '../actions';
+import {
+  modifyTile,
+  fetchPuzzle,
+  receiveTileStates,
+  fetchTileStates,
+  saveTileState,
+  selectPuzzle,
+  selectTool
+} from '../actions';
 import { HIGHLIGHTED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 import ToolSelector from '../components/ToolSelector';
 import PuzzleSelector from '../components/PuzzleSelector';
+import Button from '../components/Button';
 
 class App extends React.Component {
   constructor() {
@@ -12,6 +21,7 @@ class App extends React.Component {
     this.handleToolChange = this.handleToolChange.bind(this);
     this.handlePuzzleChange = this.handlePuzzleChange.bind(this);
     this.handleTileChange = this.handleTileChange.bind(this);
+    this.handleBoardReset = this.handleBoardReset.bind(this);
     this.handleTabPress = this.handleTabPress.bind(this);
   }
 
@@ -70,12 +80,25 @@ class App extends React.Component {
     }
   }
 
+  handleBoardReset(puzzleId) {
+    this.props.dispatch(receiveTileStates(puzzleId, {}));
+  }
+
   render() {
     const { currentPuzzle, currentTool, puzzles } = this.props;
-    let board;
     let toolSelector;
     let puzzleSelector;
+    let resetButton;
+    let board;
     if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
+      resetButton = (
+        <Button
+          onClick={this.handleBoardReset.bind(this, currentPuzzle)}
+        >
+          Reset
+        </Button>
+      );
+
       toolSelector = (
         <ToolSelector
           currentTool={currentTool}
@@ -108,6 +131,7 @@ class App extends React.Component {
         <div className="container">
           {toolSelector}
           {puzzleSelector}
+          {resetButton}
           {board}
         </div>
       </div>
