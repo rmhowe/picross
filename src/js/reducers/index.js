@@ -6,6 +6,8 @@ import {
   RECEIVE_PUZZLE,
   SELECT_TOOL,
   MODIFY_TILE,
+  REQUEST_TILE_STATES,
+  RECEIVE_TILE_STATES,
   HIGHLIGHTED,
   BLOCKED,
   EMPTY,
@@ -36,6 +38,7 @@ function puzzles(state = {}, action) {
     case REQUEST_PUZZLE:
     case RECEIVE_PUZZLE:
     case MODIFY_TILE:
+    case RECEIVE_TILE_STATES:
       const id = action.payload.puzzleId;
       return Object.assign({}, state, {
         [id]: puzzle(state[id], action)
@@ -65,6 +68,10 @@ function puzzle(state = {
     case MODIFY_TILE:
       return Object.assign({}, state, {
         tileStates: tileState(state.tileStates, action)
+      });
+    case RECEIVE_TILE_STATES:
+      return Object.assign({}, state, {
+        tileStates: action.payload.tileStates
       });
     default:
       return state;

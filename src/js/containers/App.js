@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { modifyTile, fetchPuzzle, selectPuzzle, selectTool } from '../actions';
+import { modifyTile, fetchPuzzle, fetchTileStates, saveTileState, selectPuzzle, selectTool } from '../actions';
 import { HIGHLIGHTED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 import ToolSelector from '../components/ToolSelector';
@@ -16,8 +16,18 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 2; i++) {
       this.props.dispatch(fetchPuzzle(i));
+      this.props.dispatch(fetchTileStates(i));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const numPuzzles = Object.keys(prevProps.puzzles).length;
+    for (let i = 1; i <= numPuzzles; i++) {
+      if (JSON.stringify(prevProps.puzzles[i].tileStates) !== JSON.stringify(this.props.puzzles[i].tileStates)) {
+        this.props.dispatch(saveTileState(i, this.props.puzzles[i].tileStates));
+      }
     }
   }
 

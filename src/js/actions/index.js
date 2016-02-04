@@ -3,6 +3,8 @@ import {
   SELECT_PUZZLE,
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE,
+  REQUEST_TILE_STATES,
+  RECEIVE_TILE_STATES,
   SELECT_TOOL,
   MODIFY_TILE
 } from '../constants';
@@ -48,6 +50,41 @@ export function fetchPuzzle(puzzleId) {
   };
 }
 
+export function requestTileStates(puzzleId) {
+  return {
+    type: REQUEST_TILE_STATES,
+    payload: {
+      puzzleId
+    }
+  };
+}
+
+export function receiveTileStates(puzzleId, tileStates) {
+  return {
+    type: RECEIVE_TILE_STATES,
+    payload: {
+      puzzleId,
+      tileStates
+    }
+  };
+}
+
+export function fetchTileStates(puzzleId) {
+  return (dispatch) => {
+    dispatch(requestTileStates(puzzleId));
+
+    let tileStates;
+    const savedTiles = window.localStorage.getItem(`puzzle_${puzzleId}_tiles`);
+    if (savedTiles) {
+      tileStates = JSON.parse(savedTiles);
+    } else {
+      tileStates = {};
+    }
+
+    dispatch(receiveTileStates(puzzleId, tileStates));
+  };
+}
+
 export function selectTool(tool) {
   return {
     type: SELECT_TOOL,
@@ -65,5 +102,11 @@ export function modifyTile(puzzleId, tileCoords, modification) {
       tileCoords,
       modification
     }
+  };
+}
+
+export function saveTileState(puzzleId, tileState) {
+  return dispatch => {
+    window.localStorage.setItem(`puzzle_${puzzleId}_tiles`, JSON.stringify(tileState));
   };
 }

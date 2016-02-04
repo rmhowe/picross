@@ -15,7 +15,7 @@ export default class PuzzleSelector extends React.Component {
           value={currentPuzzle}
           onChange={handlePuzzleChange}
         >
-          {puzzleNames.map((name) => <option value={name}>{name}</option>)}
+          {puzzleNames.map((name, i) => <option key={i} value={name}>{name}</option>)}
         </select>
       </div>
     );
