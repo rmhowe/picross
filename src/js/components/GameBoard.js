@@ -11,11 +11,13 @@ export default class GameBoard extends React.Component {
   }
 
   componentDidMount() {
-    document.body.addEventListener('mouseup', this.handleDragEnd);
+    document.addEventListener('mouseup', this.handleDragEnd);
+    document.addEventListener('mouseleave', this.handleDragEnd);
   }
 
   componentWillUnmount() {
-    document.body.removeEventListener('mouseup', this.handleDragEnd);
+    document.removeEventListener('mouseup', this.handleDragEnd);
+    document.removeEventListener('mouseleave', this.handleDragEnd);
   }
 
   handleDragStart(i, j, event) {
