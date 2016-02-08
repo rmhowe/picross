@@ -1,9 +1,0 @@
-@mixin transition($target, $duration) {
-  -webkit-transition: $target, $duration;
-  transition: $target, $duration;
-}
-
-@mixin transform($transform) {
-  -webkit-transform: $transform;
-  transform: $transform;
-}
