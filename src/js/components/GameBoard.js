@@ -1,5 +1,5 @@
 import React from 'react';
-import { HIGHLIGHTED, BLOCKED } from '../constants';
+import { HIGHLIGHTED, BLOCKED, HIGHLIGHT, BLOCK } from '../constants';
 
 export default class GameBoard extends React.Component {
   constructor(props) {
@@ -115,13 +115,14 @@ export default class GameBoard extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, puzzles, handleTileChange } = this.props;
+    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
     const puzzle = puzzles[currentPuzzle];
     const board = this.generateBoard(currentPuzzle, puzzle, handleTileChange);
+    const boardModifier = currentTool === HIGHLIGHT ? "game-board--highlight" : "game-board--block";
 
     return (
       <div
-        className="game-board"
+        className={`game-board ${boardModifier}`}
       >
         {board}
       </div>
@@ -131,6 +132,7 @@ export default class GameBoard extends React.Component {
 
 GameBoard.propTypes = {
   currentPuzzle: React.PropTypes.number,
+  currentTool: React.PropTypes.string,
   puzzles: React.PropTypes.object,
   handleTileChange: React.PropTypes.func
 };

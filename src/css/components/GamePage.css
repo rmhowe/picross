@@ -1,0 +1,23 @@
+.game-page {
+  text-align: center;
+}
+
+.game-page:focus {
+  outline: none;
+}
+
+.game-page__nav {
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+}
+
+.game-page__nav::after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+
+.reset-button {
+  float: right;
+}

@@ -1,5 +1,9 @@
 .tool-selector {
-  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  float: left;
+  display: inline-block;
 }
 
 .tool-selector__tool {
@@ -23,7 +27,7 @@
 
 .tool-selector__tool:hover,
 .tool-selector__tool--active {
-  background-color: color($accent-color l(+5%));
+  background-color: color($accent-color l(+8%));
   color: white;
   cursor: pointer;;
 }
