@@ -16,8 +16,8 @@ import PuzzleSelector from '../components/PuzzleSelector';
 import Button from '../components/Button';
 
 class GamePage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleToolChange = this.handleToolChange.bind(this);
     this.handlePuzzleChange = this.handlePuzzleChange.bind(this);
     this.handleTileChange = this.handleTileChange.bind(this);
