@@ -1,7 +1,9 @@
 .game-board {
-  margin: 0 auto;
+  clear: both;
+  margin: 20px auto;
   width: 400px;
   height: 400px;
+  text-align: left;
 }
 
 .game-board__tile {
@@ -11,11 +13,12 @@
   transition: all, 200ms;
 }
 
-.game-board__tile:hover,
+.game-board--highlight .game-board__tile:hover,
 .game-board__tile--highlighted {
   background-color: color($accent-color l(+15%));
 }
 
+.game-board--block .game-board__tile:hover,
 .game-board__tile--blocked {
   background-color: #e6e6e6;
 }

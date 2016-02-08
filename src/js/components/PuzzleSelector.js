@@ -10,14 +10,13 @@ export default class PuzzleSelector extends React.Component {
     }
 
     return (
-      <div>
-        <select
-          value={currentPuzzle}
-          onChange={handlePuzzleChange}
-        >
-          {puzzleNames.map((name, i) => <option key={i} value={name}>{name}</option>)}
-        </select>
-      </div>
+      <select
+        className="puzzle-selector"
+        value={currentPuzzle}
+        onChange={handlePuzzleChange}
+      >
+        {puzzleNames.map((name, i) => <option key={i} value={name}>{name}</option>)}
+      </select>
     );
   }
 }
