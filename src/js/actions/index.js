@@ -6,7 +6,8 @@ import {
   REQUEST_TILE_STATES,
   RECEIVE_TILE_STATES,
   SELECT_TOOL,
-  MODIFY_TILE
+  MODIFY_TILE,
+  SET_WIN_STATE
 } from '../constants';
 
 export function selectPuzzle(puzzleId) {
@@ -27,14 +28,15 @@ export function requestPuzzle(puzzleId) {
   };
 }
 
-export function receivePuzzle(puzzleId, title, rows, columns) {
+export function receivePuzzle(puzzleId, title, rows, columns, solution) {
   return {
     type: RECEIVE_PUZZLE,
     payload: {
       puzzleId,
       title,
       rows,
-      columns
+      columns,
+      solution
     }
   };
 }
@@ -45,7 +47,8 @@ export function fetchPuzzle(puzzleId) {
     return fetch(`/puzzles/${puzzleId}.json`)
       .then((response) => response.json())
       .then((puzzleData) => {
-        dispatch(receivePuzzle(puzzleId, puzzleData.title, puzzleData.rows, puzzleData.columns));
+        const { title, rows, columns, solution } = puzzleData;
+        dispatch(receivePuzzle(puzzleId, title, rows, columns, solution));
       });
   };
 }
@@ -108,5 +111,15 @@ export function modifyTile(puzzleId, tileCoords, modification) {
 export function saveTileState(puzzleId, tileState) {
   return dispatch => {
     window.localStorage.setItem(`puzzle_${puzzleId}_tiles`, JSON.stringify(tileState));
+  };
+}
+
+export function setWinState(puzzleId, winState) {
+  return {
+    type: SET_WIN_STATE,
+    payload: {
+      puzzleId,
+      winState
+    }
   };
 }

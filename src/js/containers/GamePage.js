@@ -7,7 +7,8 @@ import {
   fetchTileStates,
   saveTileState,
   selectPuzzle,
-  selectTool
+  selectTool,
+  setWinState
 } from '../actions';
 import { HIGHLIGHTED, BLOCKED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
@@ -44,11 +45,48 @@ class GamePage extends React.Component {
   componentDidUpdate(prevProps) {
     const numPuzzles = Object.keys(prevProps.puzzles).length;
     for (let i = 1; i <= numPuzzles; i++) {
-      if (JSON.stringify(prevProps.puzzles[i].tileStates) !== JSON.stringify(this.props.puzzles[i].tileStates)) {
-        this.props.dispatch(saveTileState(i, this.props.puzzles[i].tileStates));
-        // TODO: Check if the new condition is the winning condition
+      const prevTileStates = prevProps.puzzles[i].tileStates;
+      const newTileStates = this.props.puzzles[i].tileStates;
+      if (JSON.stringify(prevTileStates) !== JSON.stringify(newTileStates)) {
+        this.props.dispatch(saveTileState(i, newTileStates));
+        const solution = this.props.puzzles[i].solution;
+        const solved = this.checkSolution(solution, newTileStates);
+        if (solved !== this.props.puzzles[i].won) {
+          this.props.dispatch(setWinState(i, solved));
+        }
       }
     }
+  }
+
+  checkSolution(solution, tileStates) {
+    let solutionHighlightedTiles = 0;
+    const solutionHighlightedTilesFilled = solution.every((row, i) => {
+      return row.every((highlightedSection) => {
+        for (let j = highlightedSection[0]; j <= highlightedSection[1]; j++) {
+          solutionHighlightedTiles++;
+          if (tileStates[`${i},${j}`] !== HIGHLIGHTED) {
+            return false;
+          }
+        }
+        return true;
+      });
+    });
+
+    let solved = false;
+    if (solutionHighlightedTilesFilled) {
+      let userHighlightedTiles = 0;
+      Object.keys(tileStates).forEach((key) => {
+        if (tileStates[key] === HIGHLIGHTED) {
+          userHighlightedTiles++;
+        }
+      });
+
+      if (solutionHighlightedTiles === userHighlightedTiles) {
+        solved = true;
+      }
+    }
+
+    return solved;
   }
 
   handleToolChange(newTool) {
