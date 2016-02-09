@@ -85,10 +85,16 @@ export default class GameBoard extends React.Component {
     const board = this.generateBoard(currentPuzzle, puzzle, currentTool, handleBoardDragStart, handleBoardDrag);
     const boardModifier = currentTool === HIGHLIGHT ? "game-board--highlight" : "game-board--block";
 
+    let winMessage;
+    if (puzzle.won) {
+      winMessage = <div className="win-message">Congratulations! You solved the puzzle :)</div>;
+    }
+
     return (
       <div
         className={`game-board ${boardModifier}`}
       >
+        {winMessage}
         {board}
       </div>
     );

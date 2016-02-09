@@ -8,6 +8,7 @@ import {
   MODIFY_TILE,
   REQUEST_TILE_STATES,
   RECEIVE_TILE_STATES,
+  SET_WIN_STATE,
   HIGHLIGHTED,
   BLOCKED,
   EMPTY,
@@ -39,6 +40,7 @@ function puzzles(state = {}, action) {
     case RECEIVE_PUZZLE:
     case MODIFY_TILE:
     case RECEIVE_TILE_STATES:
+    case SET_WIN_STATE:
       const id = action.payload.puzzleId;
       return Object.assign({}, state, {
         [id]: puzzle(state[id], action)
@@ -52,7 +54,9 @@ function puzzle(state = {
   isFetching: false,
   rows: [],
   columns: [],
-  tileStates: {}
+  solution: [],
+  tileStates: {},
+  won: false
 }, action) {
   switch (action.type) {
     case REQUEST_PUZZLE:
@@ -63,7 +67,8 @@ function puzzle(state = {
       return Object.assign({}, state, {
         isFetching: false,
         rows: action.payload.rows,
-        columns: action.payload.columns
+        columns: action.payload.columns,
+        solution: action.payload.solution
       });
     case MODIFY_TILE:
       return Object.assign({}, state, {
@@ -72,6 +77,10 @@ function puzzle(state = {
     case RECEIVE_TILE_STATES:
       return Object.assign({}, state, {
         tileStates: action.payload.tileStates
+      });
+    case SET_WIN_STATE:
+      return Object.assign({}, state, {
+        won: action.payload.winState
       });
     default:
       return state;
