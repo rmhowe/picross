@@ -2,43 +2,7 @@ import React from 'react';
 import { HIGHLIGHTED, BLOCKED, HIGHLIGHT, BLOCK } from '../constants';
 
 export default class GameBoard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { dragging: false };
-    this.handleDragStart = this.handleDragStart.bind(this);
-    this.handleDragEnd = this.handleDragEnd.bind(this);
-    this.handleDrag = this.handleDrag.bind(this);
-  }
-
-  componentDidMount() {
-    document.addEventListener('mouseup', this.handleDragEnd);
-    document.addEventListener('mouseleave', this.handleDragEnd);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mouseup', this.handleDragEnd);
-    document.removeEventListener('mouseleave', this.handleDragEnd);
-  }
-
-  handleDragStart(i, j, event) {
-    this.setState({ dragging: true });
-
-    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
-    handleTileChange(currentPuzzle, `${i},${j}`, currentTool, event);
-  }
-
-  handleDragEnd() {
-    this.setState({ dragging: false });
-  }
-
-  handleDrag(i, j, event) {
-    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
-    if (this.state.dragging) {
-      handleTileChange(currentPuzzle, `${i},${j}`, currentTool, event);
-    }
-  }
-
-  generateBoard(puzzleId, puzzle, handleTileChange) {
+  generateBoard(puzzleId, puzzle, currentTool, handleBoardDragStart, handleBoardDrag) {
     const board = [];
     const size = puzzle.rows.length;
     const tileSize = 100 / size;
@@ -58,10 +22,11 @@ export default class GameBoard extends React.Component {
           columnNumbers = this.getColumnNumbers(puzzle.columns[j]);
         }
 
+        const tileState = puzzle.tileStates[`${i},${j}`];
         let classes = "game-board__tile";
-        if (puzzle.tileStates[`${i},${j}`] === HIGHLIGHTED) {
+        if (tileState === HIGHLIGHTED) {
           classes += " game-board__tile--highlighted";
-        } else if (puzzle.tileStates[`${i},${j}`] === BLOCKED) {
+        } else if (tileState === BLOCKED) {
           classes += " game-board__tile--blocked";
         }
 
@@ -69,8 +34,8 @@ export default class GameBoard extends React.Component {
           <div
             className={classes}
             style={tileStyle}
-            onMouseOver={this.handleDrag.bind(this, i, j)}
-            onMouseDown={this.handleDragStart.bind(this, i, j)}
+            onMouseDown={handleBoardDragStart.bind(this, i, j, tileState, currentTool, puzzleId)}
+            onMouseOver={handleBoardDrag.bind(this, i, j, puzzleId)}
           >
             {rowNumbers}
             {columnNumbers}
@@ -115,15 +80,21 @@ export default class GameBoard extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, currentTool, puzzles, handleTileChange } = this.props;
+    const { currentPuzzle, currentTool, puzzles, handleBoardDragStart, handleBoardDrag } = this.props;
     const puzzle = puzzles[currentPuzzle];
-    const board = this.generateBoard(currentPuzzle, puzzle, handleTileChange);
+    const board = this.generateBoard(currentPuzzle, puzzle, currentTool, handleBoardDragStart, handleBoardDrag);
     const boardModifier = currentTool === HIGHLIGHT ? "game-board--highlight" : "game-board--block";
+
+    let winMessage;
+    if (puzzle.won) {
+      winMessage = <div className="win-message">Congratulations! You solved the puzzle :)</div>;
+    }
 
     return (
       <div
         className={`game-board ${boardModifier}`}
       >
+        {winMessage}
         {board}
       </div>
     );
@@ -134,5 +105,6 @@ GameBoard.propTypes = {
   currentPuzzle: React.PropTypes.number,
   currentTool: React.PropTypes.string,
   puzzles: React.PropTypes.object,
-  handleTileChange: React.PropTypes.func
+  handleBoardDragStart: React.PropTypes.func,
+  handleBoardDrag: React.PropTypes.func
 };

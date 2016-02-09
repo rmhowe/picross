@@ -15,7 +15,7 @@
 
 .game-board--highlight .game-board__tile:hover,
 .game-board__tile--highlighted {
-  background-color: color($accent-color l(+15%));
+  background-color: color($accent-color l(+10%));
 }
 
 .game-board--block .game-board__tile:hover,
@@ -37,4 +37,8 @@
   left: 50%;
   transform: translate(-25%, 0);
   width: 1em;
+}
+
+.win-message {
+  text-align: center;
 }
