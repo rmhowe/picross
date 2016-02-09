@@ -8,7 +8,7 @@ import GamePage from './GamePage';
 
 class App extends React.Component {
   componentDidMount() {
-    for (let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 10; i++) {
       this.props.dispatch(fetchPuzzle(i));
       this.props.dispatch(fetchTileStates(i));
     }
