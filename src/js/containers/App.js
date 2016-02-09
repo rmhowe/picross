@@ -4,6 +4,7 @@ import {
   fetchPuzzle,
   fetchTileStates,
 } from '../actions';
+import IndexPage from './IndexPage';
 import GamePage from './GamePage';
 
 class App extends React.Component {
@@ -17,10 +18,10 @@ class App extends React.Component {
   render() {
     const { currentPuzzle, puzzles } = this.props;
     let page;
-    if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
-      page = (
-        <GamePage/>
-      );
+    if (currentPuzzle && puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
+      page = <GamePage/>;
+    } else {
+      page = <IndexPage/>;
     }
 
     return (
