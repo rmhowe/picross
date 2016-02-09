@@ -1,0 +1,8 @@
+.index-page {
+  text-align: center;
+}
+
+.index-page__title {
+  margin-top: 0;
+  color: color($accent-color l(-5%));
+}

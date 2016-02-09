@@ -13,7 +13,6 @@ import {
 import { HIGHLIGHTED, BLOCKED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 import ToolSelector from '../components/ToolSelector';
-import PuzzleSelector from '../components/PuzzleSelector';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class GamePage extends React.Component {
 
     this.handleToolChange = this.handleToolChange.bind(this);
     this.handleTabPress = this.handleTabPress.bind(this);
-    this.handlePuzzleChange = this.handlePuzzleChange.bind(this);
+    this.handleBackButton = this.handleBackButton.bind(this);
     this.handleBoardReset = this.handleBoardReset.bind(this);
     this.handleBoardDragStart = this.handleBoardDragStart.bind(this);
     this.handleBoardDrag = this.handleBoardDrag.bind(this);
@@ -107,14 +106,8 @@ class GamePage extends React.Component {
     }
   }
 
-  handlePuzzleChange(event) {
-    const { puzzles, dispatch } = this.props;
-    const newPuzzle = parseInt(event.target.value);
-    if (!puzzles[newPuzzle]) {
-      dispatch(fetchPuzzle(newPuzzle));
-      dispatch(fetchTileStates(newPuzzle));
-    }
-    dispatch(selectPuzzle(newPuzzle));
+  handleBackButton() {
+    this.props.dispatch(selectPuzzle(0));
   }
 
   handleBoardReset(puzzleId) {
@@ -162,7 +155,7 @@ class GamePage extends React.Component {
     const { currentPuzzle, currentTool, puzzles } = this.props;
     let resetButton;
     let toolSelector;
-    let puzzleSelector;
+    let backButton;
     let board;
     if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       resetButton = (
@@ -181,11 +174,13 @@ class GamePage extends React.Component {
         />
       );
 
-      puzzleSelector = (
-        <PuzzleSelector
-          currentPuzzle={currentPuzzle}
-          handlePuzzleChange={this.handlePuzzleChange}
-        />
+      backButton = (
+        <div
+          className="button back-button"
+          onClick={this.handleBackButton}
+        >
+          Back
+        </div>
       );
 
       board = (
@@ -207,7 +202,7 @@ class GamePage extends React.Component {
       >
         <div className="game-page__nav">
           {toolSelector}
-          {puzzleSelector}
+          {backButton}
           {resetButton}
         </div>
         {board}

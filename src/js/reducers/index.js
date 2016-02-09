@@ -16,7 +16,7 @@ import {
   BLOCK
 } from '../constants';
 
-function currentPuzzle(state = 1, action) {
+function currentPuzzle(state = null, action) {
   switch (action.type) {
     case SELECT_PUZZLE:
       return action.payload.puzzleId;

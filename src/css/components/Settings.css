@@ -1,18 +1,20 @@
-.puzzle-selector {
-  width: 50%;
-  margin: 0 auto;
+.settings {
+
 }
 
-.puzzle-selector__puzzle {
+.setting {
   display: inline-block;
-  padding: 10px 15px;
-  margin: 20px;
+  width: 30px;
+  height: 30px;
+  padding: 5px 8px;
+  margin: 10px;
   border: 1px solid $accent-color;
+  border-radius: 15px;
   color: $accent-color;
   transition: all 200ms;
 }
 
-.puzzle-selector__puzzle:hover {
+.setting:hover {
   cursor: pointer;
   background-color: $accent-color;
   color: white;
