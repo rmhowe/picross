@@ -13,6 +13,7 @@ import {
 import { HIGHLIGHTED, BLOCKED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 import ToolSelector from '../components/ToolSelector';
+import Button from '../components/Button';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -159,12 +160,12 @@ class GamePage extends React.Component {
     let board;
     if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       resetButton = (
-        <div
-          className="button reset-button"
+        <Button
+          className="reset-button"
           onClick={this.handleBoardReset.bind(this, currentPuzzle)}
         >
           Reset
-        </div>
+        </Button>
       );
 
       toolSelector = (
@@ -175,12 +176,12 @@ class GamePage extends React.Component {
       );
 
       backButton = (
-        <div
-          className="button back-button"
+        <Button
+          className="back-button"
           onClick={this.handleBackButton}
         >
           Back
-        </div>
+        </Button>
       );
 
       board = (
