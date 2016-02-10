@@ -25,11 +25,11 @@ export default class BoardTile extends React.Component {
     const tileSize = 100 / boardSize;
 
     const style = this.getStyle(tileSize, i, j);
-    let classes = "game-board__tile";
+    let classes = "board-tile";
     if (tileState === HIGHLIGHTED) {
-      classes += " game-board__tile--highlighted";
+      classes += " board-tile--highlighted";
     } else if (tileState === BLOCKED) {
-      classes += " game-board__tile--blocked";
+      classes += " board-tile--blocked";
     }
 
     let hintNumbersRow;

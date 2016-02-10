@@ -7,7 +7,8 @@ import {
   RECEIVE_TILE_STATES,
   SELECT_TOOL,
   MODIFY_TILE,
-  SET_WIN_STATE
+  SET_WIN_STATE,
+  SET_NIGHT_MODE
 } from '../constants';
 
 export function selectPuzzle(puzzleId) {
@@ -120,6 +121,15 @@ export function setWinState(puzzleId, winState) {
     payload: {
       puzzleId,
       winState
+    }
+  };
+}
+
+export function setNightMode(nightMode) {
+  return {
+    type: SET_NIGHT_MODE,
+    payload: {
+      nightMode
     }
   };
 }

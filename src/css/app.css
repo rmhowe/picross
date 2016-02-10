@@ -5,8 +5,10 @@
 
 @import 'components/Button.css';
 
+@import 'components/BoardTile.css';
 @import 'components/GameBoard.css';
 @import 'components/GamePage.css';
+@import 'components/HintNumbers.css';
 @import 'components/IndexPage.css';
 @import 'components/PuzzleSelector.css';
 @import 'components/Settings.css';

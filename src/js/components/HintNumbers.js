@@ -5,14 +5,14 @@ export default class HintNumbers extends React.Component {
     const rowNumbersSpaced = rowNumbers.reduce((prev, curr) => {
       return `${prev} ${curr}`;
     }, "");
-    return <span className="game-board__row-numbers">{rowNumbersSpaced}</span>;
+    return <span className="hint-numbers hint-numbers--row">{rowNumbersSpaced}</span>;
   }
 
   getColumnNumbers(columnNumbers) {
     const columnNumbersSpaced = columnNumbers.reduce((prev, curr) => {
       return `${prev} ${curr}`;
     }, "");
-    return <span className="game-board__column-numbers">{columnNumbersSpaced}</span>;
+    return <span className="hint-numbers hint-numbers--column">{columnNumbersSpaced}</span>;
   }
 
   render() {
