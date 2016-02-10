@@ -9,6 +9,7 @@ import {
   REQUEST_TILE_STATES,
   RECEIVE_TILE_STATES,
   SET_WIN_STATE,
+  SET_NIGHT_MODE,
   HIGHLIGHTED,
   BLOCKED,
   EMPTY,
@@ -106,9 +107,23 @@ function tileState(state = {}, action) {
   }
 }
 
+function settings(state = {
+  nightMode: false
+}, action) {
+  switch (action.type) {
+    case SET_NIGHT_MODE:
+      return Object.assign({}, state, {
+        nightMode: action.payload.nightMode
+      });
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   currentPuzzle,
   currentTool,
-  puzzles
+  puzzles,
+  settings
 });
 export default rootReducer;

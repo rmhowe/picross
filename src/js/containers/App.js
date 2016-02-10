@@ -16,7 +16,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, puzzles } = this.props;
+    const { currentPuzzle, puzzles, settings } = this.props;
+
     let page;
     if (currentPuzzle && puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       page = <GamePage/>;
@@ -24,8 +25,13 @@ class App extends React.Component {
       page = <IndexPage/>;
     }
 
+    let classNames = "app";
+    if (settings.nightMode) {
+      classNames += " app--night-mode";
+    }
+
     return (
-      <div className="App">
+      <div className={classNames}>
         <div className="container">
           {page}
         </div>
@@ -37,7 +43,8 @@ class App extends React.Component {
 function select(state) {
   return {
     currentPuzzle: state.currentPuzzle,
-    puzzles: state.puzzles
+    puzzles: state.puzzles,
+    settings: state.settings
   };
 }
 

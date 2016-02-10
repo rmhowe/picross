@@ -1,16 +1,22 @@
-html, body, #app, .App {
+html,
+body,
+#app,
+.app,
+.container {
   width: 100%;
   height: 100%;
 }
 
-.App {
+.app {
   transition: background-color 1000ms;
+}
+
+.app--night-mode {
+  background-color: #222;
 }
 
 .container {
   margin: 0 auto;
   padding: 40px 20px;
-  width: 100%;
-  height: 100%;
   max-width: 960px;
 }
