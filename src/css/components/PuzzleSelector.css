@@ -1,4 +1,17 @@
 .puzzle-selector {
-  position: absolute;
-  left: 0;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.puzzle-selector__puzzle {
+  display: inline-block;
+  padding: 10px 0;
+  margin: 20px;
+  width: 46px;
+  text-align: center;
+  transition: all 200ms;
+}
+
+.puzzle-selector__puzzle:hover {
+  cursor: pointer;
 }

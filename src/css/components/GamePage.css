@@ -18,6 +18,11 @@
   clear: both;
 }
 
+.back-button {
+  position: absolute;
+  left: 0;
+}
+
 .reset-button {
   float: right;
 }

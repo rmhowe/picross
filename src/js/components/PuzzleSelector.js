@@ -1,27 +1,42 @@
 import React from 'react';
+import Radium from 'radium';
 
-export default class PuzzleSelector extends React.Component {
+class PuzzleSelector extends React.Component {
   render() {
-    const { currentPuzzle, handlePuzzleChange } = this.props;
+    const puzzleStyle = {
+      color: this.props.appColor,
+      border: `1px solid ${this.props.appColor}`,
+      ":hover": {
+        color: "white",
+        backgroundColor: this.props.appColor
+      }
+    };
 
-    const puzzleNames = [];
+    const puzzles = [];
     for (let i = 1; i <= 10; i++) {
-      puzzleNames.push(i);
+      puzzles.push(
+        <div
+          key={i}
+          style={puzzleStyle}
+          className="puzzle-selector__puzzle"
+          onClick={this.props.handlePuzzleSelect.bind(this, i)}
+        >
+          {i}
+        </div>
+      );
     }
 
     return (
-      <select
-        className="puzzle-selector"
-        value={currentPuzzle}
-        onChange={handlePuzzleChange}
-      >
-        {puzzleNames.map((name, i) => <option key={i} value={name}>{name}</option>)}
-      </select>
+      <div className="puzzle-selector">
+        {puzzles}
+      </div>
     );
   }
 }
 
 PuzzleSelector.propTypes = {
-  currentPuzzle: React.PropTypes.number,
-  handlePuzzleChange: React.PropTypes.func
+  puzzles: React.PropTypes.object,
+  handlePuzzleSelect: React.PropTypes.func
 };
+
+export default Radium(PuzzleSelector);

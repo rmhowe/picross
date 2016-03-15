@@ -1,0 +1,21 @@
+.hint-numbers {
+  position: absolute;
+}
+
+.app--night-mode .hint-numbers {
+  color: white;
+}
+
+.hint-numbers--row {
+  white-space: nowrap;
+  top: 50%;
+  left: -20%;
+  transform: translate(-100%, -50%);
+}
+
+.hint-numbers--column {
+  top: 120%;
+  left: 50%;
+  transform: translate(-25%, 0);
+  width: 1em;
+}

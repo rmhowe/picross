@@ -1,0 +1,25 @@
+.settings {
+
+}
+
+.setting {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  padding: 5px 8px;
+  margin: 10px;
+  border-radius: 15px;
+  transition: all 200ms;
+}
+
+.setting:hover {
+  cursor: pointer;
+}
+
+.setting__night-mode {
+  padding: 5px 8px;
+}
+
+.setting__color-change {
+  padding: 5px 2px;
+}

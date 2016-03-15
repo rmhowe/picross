@@ -13,7 +13,7 @@ import {
 import { HIGHLIGHTED, BLOCKED, EMPTY, HIGHLIGHT, BLOCK } from '../constants';
 import GameBoard from '../components/GameBoard';
 import ToolSelector from '../components/ToolSelector';
-import PuzzleSelector from '../components/PuzzleSelector';
+import Button from '../components/Button';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class GamePage extends React.Component {
 
     this.handleToolChange = this.handleToolChange.bind(this);
     this.handleTabPress = this.handleTabPress.bind(this);
-    this.handlePuzzleChange = this.handlePuzzleChange.bind(this);
+    this.handleBackButton = this.handleBackButton.bind(this);
     this.handleBoardReset = this.handleBoardReset.bind(this);
     this.handleBoardDragStart = this.handleBoardDragStart.bind(this);
     this.handleBoardDrag = this.handleBoardDrag.bind(this);
@@ -107,14 +107,8 @@ class GamePage extends React.Component {
     }
   }
 
-  handlePuzzleChange(event) {
-    const { puzzles, dispatch } = this.props;
-    const newPuzzle = parseInt(event.target.value);
-    if (!puzzles[newPuzzle]) {
-      dispatch(fetchPuzzle(newPuzzle));
-      dispatch(fetchTileStates(newPuzzle));
-    }
-    dispatch(selectPuzzle(newPuzzle));
+  handleBackButton() {
+    this.props.dispatch(selectPuzzle(0));
   }
 
   handleBoardReset(puzzleId) {
@@ -159,37 +153,43 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, currentTool, puzzles } = this.props;
+    const { currentPuzzle, currentTool, puzzles, settings } = this.props;
     let resetButton;
     let toolSelector;
-    let puzzleSelector;
+    let backButton;
     let board;
     if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
       resetButton = (
-        <div
-          className="button reset-button"
+        <Button
+          className="reset-button"
+          color={settings.appColor}
           onClick={this.handleBoardReset.bind(this, currentPuzzle)}
         >
           Reset
-        </div>
+        </Button>
       );
 
       toolSelector = (
         <ToolSelector
+          appColor={this.props.settings.appColor}
           currentTool={currentTool}
           handleToolChange={this.handleToolChange}
         />
       );
 
-      puzzleSelector = (
-        <PuzzleSelector
-          currentPuzzle={currentPuzzle}
-          handlePuzzleChange={this.handlePuzzleChange}
-        />
+      backButton = (
+        <Button
+          className="back-button"
+          color={settings.appColor}
+          onClick={this.handleBackButton}
+        >
+          Back
+        </Button>
       );
 
       board = (
         <GameBoard
+          appColor={this.props.settings.appColor}
           currentPuzzle={currentPuzzle}
           currentTool={currentTool}
           puzzles={puzzles}
@@ -207,7 +207,7 @@ class GamePage extends React.Component {
       >
         <div className="game-page__nav">
           {toolSelector}
-          {puzzleSelector}
+          {backButton}
           {resetButton}
         </div>
         {board}
@@ -220,7 +220,8 @@ function select(state) {
   return {
     currentPuzzle: state.currentPuzzle,
     currentTool: state.currentTool,
-    puzzles: state.puzzles
+    puzzles: state.puzzles,
+    settings: state.settings
   };
 }
 

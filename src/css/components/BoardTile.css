@@ -1,0 +1,19 @@
+.board-tile {
+  position: relative;
+  float: left;
+  transition: all, 200ms;
+}
+
+.board-tile:hover {
+  cursor: pointer;
+}
+
+.game-board--block .board-tile:hover,
+.board-tile--blocked {
+  background-color: #e6e6e6;
+}
+
+.app--night-mode .game-board--block .board-tile:hover,
+.app--night-mode .board-tile--blocked {
+  background-color: #666;
+}

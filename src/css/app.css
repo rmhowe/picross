@@ -4,7 +4,14 @@
 @import 'layout/main.css';
 
 @import 'components/Button.css';
-@import 'components/GamePage.css';
+
+@import 'components/BoardTile.css';
+@import 'components/ColorChangeModal.css';
 @import 'components/GameBoard.css';
+@import 'components/GamePage.css';
+@import 'components/HintNumbers.css';
+@import 'components/IndexPage.css';
+@import 'components/Modal.css';
 @import 'components/PuzzleSelector.css';
+@import 'components/Settings.css';
 @import 'components/ToolSelector.css';

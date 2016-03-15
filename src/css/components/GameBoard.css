@@ -6,39 +6,6 @@
   text-align: left;
 }
 
-.game-board__tile {
-  position: relative;
-  float: left;
-  border: 1px solid $accent-color;
-  transition: all, 200ms;
-}
-
-.game-board--highlight .game-board__tile:hover,
-.game-board__tile--highlighted {
-  background-color: color($accent-color l(+10%));
-}
-
-.game-board--block .game-board__tile:hover,
-.game-board__tile--blocked {
-  background-color: #e6e6e6;
-}
-
-.game-board__row-numbers {
-  position: absolute;
-  white-space: nowrap;
-  top: 50%;
-  left: -20%;
-  transform: translate(-100%, -50%);
-}
-
-.game-board__column-numbers {
-  position: absolute;
-  top: 120%;
-  left: 50%;
-  transform: translate(-25%, 0);
-  width: 1em;
-}
-
 .win-message {
   text-align: center;
 }

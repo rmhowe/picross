@@ -6,8 +6,11 @@ import {
   REQUEST_TILE_STATES,
   RECEIVE_TILE_STATES,
   SELECT_TOOL,
+  SET_MODAL,
   MODIFY_TILE,
-  SET_WIN_STATE
+  SET_WIN_STATE,
+  SET_NIGHT_MODE,
+  SET_APP_COLOR
 } from '../constants';
 
 export function selectPuzzle(puzzleId) {
@@ -97,6 +100,15 @@ export function selectTool(tool) {
   };
 }
 
+export function setModal(modal) {
+  return {
+    type: SET_MODAL,
+    payload: {
+      modal
+    }
+  };
+}
+
 export function modifyTile(puzzleId, tileCoords, modification) {
   return {
     type: MODIFY_TILE,
@@ -120,6 +132,24 @@ export function setWinState(puzzleId, winState) {
     payload: {
       puzzleId,
       winState
+    }
+  };
+}
+
+export function setNightMode(nightMode) {
+  return {
+    type: SET_NIGHT_MODE,
+    payload: {
+      nightMode
+    }
+  };
+}
+
+export function setAppColor(color) {
+  return {
+    type: SET_APP_COLOR,
+    payload: {
+      color
     }
   };
 }
