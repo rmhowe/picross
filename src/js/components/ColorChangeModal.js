@@ -10,10 +10,10 @@ export default class ColorChangeModal extends React.Component {
       };
       return (
         <div
+          key={index}
           className="color-modal__block-container"
         >
           <div
-            key={index}
             style={blockStyle}
             className="color-modal__block"
             onClick={this.props.handleAppColorChange.bind(this, color)}
