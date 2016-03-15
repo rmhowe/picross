@@ -7,13 +7,9 @@
   display: inline-block;
   padding: 10px 15px;
   margin: 20px;
-  border: 1px solid $accent-color;
-  color: $accent-color;
   transition: all 200ms;
 }
 
 .puzzle-selector__puzzle:hover {
   cursor: pointer;
-  background-color: $accent-color;
-  color: white;
 }

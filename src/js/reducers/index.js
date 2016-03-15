@@ -5,11 +5,13 @@ import {
   REQUEST_PUZZLE,
   RECEIVE_PUZZLE,
   SELECT_TOOL,
+  SET_MODAL,
   MODIFY_TILE,
   REQUEST_TILE_STATES,
   RECEIVE_TILE_STATES,
   SET_WIN_STATE,
   SET_NIGHT_MODE,
+  SET_APP_COLOR,
   HIGHLIGHTED,
   BLOCKED,
   EMPTY,
@@ -30,6 +32,16 @@ function currentTool(state = HIGHLIGHT, action) {
   switch (action.type) {
     case SELECT_TOOL:
       return action.payload.tool;
+    default:
+      return state;
+  }
+}
+
+// Not sure if this should be in state at this level
+function modal(state = null, action) {
+  switch (action.type) {
+    case SET_MODAL:
+      return action.payload.modal;
     default:
       return state;
   }
@@ -108,12 +120,17 @@ function tileState(state = {}, action) {
 }
 
 function settings(state = {
-  nightMode: false
+  nightMode: false,
+  appColor: '#3B9DFF'
 }, action) {
   switch (action.type) {
     case SET_NIGHT_MODE:
       return Object.assign({}, state, {
         nightMode: action.payload.nightMode
+      });
+    case SET_APP_COLOR:
+      return Object.assign({}, state, {
+        appColor: action.payload.color
       });
     default:
       return state;
@@ -123,6 +140,7 @@ function settings(state = {
 const rootReducer = combineReducers({
   currentPuzzle,
   currentTool,
+  modal,
   puzzles,
   settings
 });

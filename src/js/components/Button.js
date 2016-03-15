@@ -1,10 +1,24 @@
 import React from 'react';
+import Radium from 'radium';
 
-export default class Button extends React.Component {
+import { shadeColor } from '../util';
+
+class Button extends React.Component {
   render() {
-    const { className, ...otherProps } = this.props;
+    const { className, color, ...otherProps } = this.props;
+
+    const buttonStyle = {
+      color,
+      border: `1px solid ${color}`,
+      ':hover': {
+        color: 'white',
+        backgroundColor: shadeColor(color, 15)
+      }
+    };
+
     return (
       <div
+        style={buttonStyle}
         className={`button ${className}`}
         {...otherProps}
       >
@@ -13,3 +27,5 @@ export default class Button extends React.Component {
     );
   }
 }
+
+export default Radium(Button);

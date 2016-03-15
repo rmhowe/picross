@@ -1,0 +1,18 @@
+.color-modal__block-container {
+  display: inline-block;
+  width: 50%;
+  height: 50%;
+}
+
+.color-modal__block {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.color-modal__block:hover {
+  cursor: pointer;
+}

@@ -1,12 +1,20 @@
 import React from 'react';
+import Radium from 'radium';
 import HintNumbers from './HintNumbers';
-import { HIGHLIGHTED, BLOCKED } from '../constants';
+import { HIGHLIGHT, BLOCK, HIGHLIGHTED, BLOCKED } from '../constants';
+import { shadeColor } from '../util';
 
-export default class BoardTile extends React.Component {
-  getStyle(tileSize, i, j) {
+class BoardTile extends React.Component {
+  getStyle(tileSize, i, j, appColor) {
+    const borderValue = `1px solid ${appColor}`;
     const tileStyle = {
       width: `${tileSize}%`,
-      height: `${tileSize}%`
+      height: `${tileSize}%`,
+      borderTop: borderValue,
+      borderBottom: borderValue,
+      borderRight: borderValue,
+      borderLeft: borderValue,
+      ":hover": {}
     };
 
     if (i % 5 !== 0) {
@@ -21,15 +29,19 @@ export default class BoardTile extends React.Component {
   }
 
   render() {
-    const { i, j, tileState, boardSize, rowNumbers, columnNumbers, handleBoardDragStart, handleBoardDrag } = this.props;
+    const { i, j, appColor, tileState, boardSize, rowNumbers, columnNumbers, currentTool, handleBoardDragStart, handleBoardDrag } = this.props;
     const tileSize = 100 / boardSize;
 
-    const style = this.getStyle(tileSize, i, j);
+    const style = this.getStyle(tileSize, i, j, appColor);
     let classes = "board-tile";
     if (tileState === HIGHLIGHTED) {
-      classes += " board-tile--highlighted";
+      style.backgroundColor = shadeColor(appColor, 10);
     } else if (tileState === BLOCKED) {
       classes += " board-tile--blocked";
+    }
+
+    if (currentTool === HIGHLIGHT) {
+      style[':hover'].backgroundColor = shadeColor(appColor, 10);
     }
 
     let hintNumbersRow;
@@ -66,3 +78,5 @@ BoardTile.propTypes = {
   handleBoardDragStart: React.PropTypes.func.isRequired,
   handleBoardDrag: React.PropTypes.func.isRequired
 };
+
+export default Radium(BoardTile);
