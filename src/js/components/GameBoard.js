@@ -15,10 +15,12 @@ export default class GameBoard extends React.Component {
           <BoardTile
             i={i}
             j={j}
+            appColor={this.props.appColor}
             tileState={tileState}
             boardSize={size}
             rowNumbers={puzzle.rows[i]}
             columnNumbers={puzzle.columns[j]}
+            currentTool={currentTool}
             handleBoardDragStart={handleBoardDragStart.bind(this, i, j, tileState, currentTool, puzzleId)}
             handleBoardDrag={handleBoardDrag.bind(this, i, j, puzzleId)}
           />

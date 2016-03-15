@@ -153,7 +153,7 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { currentPuzzle, currentTool, puzzles } = this.props;
+    const { currentPuzzle, currentTool, puzzles, settings } = this.props;
     let resetButton;
     let toolSelector;
     let backButton;
@@ -162,6 +162,7 @@ class GamePage extends React.Component {
       resetButton = (
         <Button
           className="reset-button"
+          color={settings.appColor}
           onClick={this.handleBoardReset.bind(this, currentPuzzle)}
         >
           Reset
@@ -170,6 +171,7 @@ class GamePage extends React.Component {
 
       toolSelector = (
         <ToolSelector
+          appColor={this.props.settings.appColor}
           currentTool={currentTool}
           handleToolChange={this.handleToolChange}
         />
@@ -178,6 +180,7 @@ class GamePage extends React.Component {
       backButton = (
         <Button
           className="back-button"
+          color={settings.appColor}
           onClick={this.handleBackButton}
         >
           Back
@@ -186,6 +189,7 @@ class GamePage extends React.Component {
 
       board = (
         <GameBoard
+          appColor={this.props.settings.appColor}
           currentPuzzle={currentPuzzle}
           currentTool={currentTool}
           puzzles={puzzles}
@@ -216,7 +220,8 @@ function select(state) {
   return {
     currentPuzzle: state.currentPuzzle,
     currentTool: state.currentTool,
-    puzzles: state.puzzles
+    puzzles: state.puzzles,
+    settings: state.settings
   };
 }
 
