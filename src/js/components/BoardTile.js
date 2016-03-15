@@ -4,17 +4,19 @@ import HintNumbers from './HintNumbers';
 import { HIGHLIGHT, BLOCK, HIGHLIGHTED, BLOCKED } from '../constants';
 import { shadeColor } from '../util';
 
-class BoardTile extends React.Component {
+export default class BoardTile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isHovering: false
+    };
+  }
+
   getStyle(tileSize, i, j, appColor) {
-    const borderValue = `1px solid ${appColor}`;
     const tileStyle = {
       width: `${tileSize}%`,
       height: `${tileSize}%`,
-      borderTop: borderValue,
-      borderBottom: borderValue,
-      borderRight: borderValue,
-      borderLeft: borderValue,
-      ":hover": {}
+      border: `1px solid ${appColor}`
     };
 
     if (i % 5 !== 0) {
@@ -28,6 +30,15 @@ class BoardTile extends React.Component {
     return tileStyle;
   }
 
+  handleMouseOver = (event) => {
+    this.props.handleBoardDrag(event);
+    this.setState({ isHovering: true });
+  };
+
+  handleMouseOut = () => {
+    this.setState({ isHovering: false });
+  };
+
   render() {
     const { i, j, appColor, tileState, boardSize, rowNumbers, columnNumbers, currentTool, handleBoardDragStart, handleBoardDrag } = this.props;
     const tileSize = 100 / boardSize;
@@ -40,8 +51,8 @@ class BoardTile extends React.Component {
       classes += " board-tile--blocked";
     }
 
-    if (currentTool === HIGHLIGHT) {
-      style[':hover'].backgroundColor = shadeColor(appColor, 10);
+    if (currentTool === HIGHLIGHT && this.state.isHovering) {
+      style.backgroundColor = shadeColor(appColor, 10);
     }
 
     let hintNumbersRow;
@@ -59,7 +70,8 @@ class BoardTile extends React.Component {
         className={classes}
         style={style}
         onMouseDown={handleBoardDragStart}
-        onMouseOver={handleBoardDrag}
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOut}
       >
         {hintNumbersRow}
         {hintNumbersColumn}
@@ -78,5 +90,3 @@ BoardTile.propTypes = {
   handleBoardDragStart: React.PropTypes.func.isRequired,
   handleBoardDrag: React.PropTypes.func.isRequired
 };
-
-export default Radium(BoardTile);
