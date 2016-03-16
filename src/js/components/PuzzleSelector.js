@@ -13,7 +13,8 @@ class PuzzleSelector extends React.Component {
     };
 
     const puzzles = [];
-    for (let i = 1; i <= 10; i++) {
+    const numPuzzles = this.props.puzzles.size;
+    for (let i = 1; i <= numPuzzles; i++) {
       puzzles.push(
         <div
           key={i}

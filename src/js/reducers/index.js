@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import Immutable from 'immutable';
 
 import {
   SELECT_PUZZLE,
@@ -47,7 +48,7 @@ function modal(state = null, action) {
   }
 }
 
-function puzzles(state = {}, action) {
+function puzzles(state = Immutable.Map(), action) {
   switch (action.type) {
     case REQUEST_PUZZLE:
     case RECEIVE_PUZZLE:
@@ -55,83 +56,63 @@ function puzzles(state = {}, action) {
     case RECEIVE_TILE_STATES:
     case SET_WIN_STATE:
       const id = action.payload.puzzleId;
-      return Object.assign({}, state, {
-        [id]: puzzle(state[id], action)
-      });
+      return state.set(id, puzzle(state.get(id), action));
     default:
       return state;
   }
 }
 
-function puzzle(state = {
+function puzzle(state = Immutable.fromJS({
   isFetching: false,
   rows: [],
   columns: [],
   solution: [],
   tileStates: {},
   won: false
-}, action) {
+}), action) {
   switch (action.type) {
     case REQUEST_PUZZLE:
-      return Object.assign({}, state, {
-        isFetching: true
-      });
+      return state.set('isFetching', true);
     case RECEIVE_PUZZLE:
-      return Object.assign({}, state, {
+      return state.merge({
         isFetching: false,
-        rows: action.payload.rows,
-        columns: action.payload.columns,
-        solution: action.payload.solution
+        rows: Immutable.fromJS(action.payload.rows),
+        columns: Immutable.fromJS(action.payload.columns),
+        solution: Immutable.fromJS(action.payload.solution)
       });
     case MODIFY_TILE:
-      return Object.assign({}, state, {
-        tileStates: tileState(state.tileStates, action)
-      });
+      return state.set('tileStates', tileState(state.get('tileStates'), action));
     case RECEIVE_TILE_STATES:
-      return Object.assign({}, state, {
-        tileStates: action.payload.tileStates
-      });
+      return state.set('tileStates', Immutable.fromJS(action.payload.tileStates));
     case SET_WIN_STATE:
-      return Object.assign({}, state, {
-        won: action.payload.winState
-      });
+      return state.set('won', action.payload.winState);
     default:
       return state;
   }
 }
 
-function tileState(state = {}, action) {
+function tileState(state = Immutable.Map(), action) {
   switch (action.payload.modification) {
     case EMPTY:
-      return Object.assign({}, state, {
-        [action.payload.tileCoords]: null
-      });
+      return state.set(action.payload.tileCoords, null);
     case HIGHLIGHT:
-      return Object.assign({}, state, {
-        [action.payload.tileCoords]: HIGHLIGHTED
-      });
+      return state.set(action.payload.tileCoords, HIGHLIGHTED);
     case BLOCK:
-      return Object.assign({}, state, {
-        [action.payload.tileCoords]: BLOCKED
-      });
+      return state.set(action.payload.tileCoords, BLOCKED);
     default:
       return state;
   }
 }
 
-function settings(state = {
+function settings(state = Immutable.Map({
   nightMode: false,
   appColor: '#3B9DFF'
-}, action) {
+}), action) {
   switch (action.type) {
     case SET_NIGHT_MODE:
-      return Object.assign({}, state, {
-        nightMode: action.payload.nightMode
-      });
+      return state.set('nightMode', action.payload.nightMode);
     case SET_APP_COLOR:
-      return Object.assign({}, state, {
-        appColor: action.payload.color
-      });
+      return state.set('appColor', action.payload.color);
     default:
       return state;
   }

@@ -40,7 +40,7 @@ export default class BoardTile extends React.Component {
   };
 
   render() {
-    const { i, j, appColor, tileState, boardSize, rowNumbers, columnNumbers, currentTool, handleBoardDragStart, handleBoardDrag } = this.props;
+    const { i, j, appColor, tileState, boardSize, rowNumbers, columnNumbers, currentTool, handleBoardDragStart } = this.props;
     const tileSize = 100 / boardSize;
 
     const style = this.getStyle(tileSize, i, j, appColor);
@@ -85,8 +85,8 @@ BoardTile.propTypes = {
   j: React.PropTypes.number.isRequired,
   tileState: React.PropTypes.string,
   boardSize: React.PropTypes.number.isRequired,
-  rowNumbers: React.PropTypes.array,
-  columnNumbers: React.PropTypes.array,
+  rowNumbers: React.PropTypes.object,
+  columnNumbers: React.PropTypes.object,
   handleBoardDragStart: React.PropTypes.func.isRequired,
   handleBoardDrag: React.PropTypes.func.isRequired
 };

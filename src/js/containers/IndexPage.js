@@ -27,7 +27,7 @@ class IndexPage extends React.Component {
   }
 
   handleNightModeClick() {
-    this.props.dispatch(setNightMode(!this.props.settings.nightMode));
+    this.props.dispatch(setNightMode(!this.props.settings.get('nightMode')));
   }
 
   handleShowColorModal(event) {
@@ -45,7 +45,7 @@ class IndexPage extends React.Component {
 
   render() {
     const titleStyle = {
-      color: shadeColor(this.props.settings.appColor, -0.05)
+      color: shadeColor(this.props.settings.get('appColor'), -0.05)
     };
 
     return (
@@ -60,12 +60,12 @@ class IndexPage extends React.Component {
           picross
         </h1>
         <PuzzleSelector
-          appColor={this.props.settings.appColor}
+          appColor={this.props.settings.get('appColor')}
           puzzles={this.props.puzzles}
           handlePuzzleSelect={this.handlePuzzleSelect}
         />
         <Settings
-          appColor={this.props.settings.appColor}
+          appColor={this.props.settings.get('appColor')}
           modal={this.props.modal}
           handleNightModeClick={this.handleNightModeClick}
           handleShowColorModal={this.handleShowColorModal}
