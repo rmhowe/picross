@@ -13,35 +13,26 @@ import Settings from '../components/Settings';
 import { shadeColor } from '../util';
 
 class IndexPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handlePuzzleSelect = this.handlePuzzleSelect.bind(this);
-    this.handleNightModeClick = this.handleNightModeClick.bind(this);
-    this.handleShowColorModal = this.handleShowColorModal.bind(this);
-    this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleAppColorChange = this.handleAppColorChange.bind(this);
-  }
-
-  handlePuzzleSelect(puzzleId) {
+  handlePuzzleSelect = (puzzleId) => {
     this.props.dispatch(selectPuzzle(puzzleId));
-  }
+  };
 
-  handleNightModeClick() {
+  handleNightModeClick = () => {
     this.props.dispatch(setNightMode(!this.props.settings.get('nightMode')));
-  }
+  };
 
-  handleShowColorModal(event) {
+  handleShowColorModal = (event) => {
     event.stopPropagation();
     this.props.dispatch(setModal(COLOR_CHANGE));
-  }
+  };
 
-  handleHideModal() {
+  handleHideModal = () => {
     this.props.dispatch(setModal(null));
-  }
+  };
 
-  handleAppColorChange(color) {
+  handleAppColorChange = (color) => {
     this.props.dispatch(setAppColor(color));
-  }
+  };
 
   render() {
     const titleStyle = {

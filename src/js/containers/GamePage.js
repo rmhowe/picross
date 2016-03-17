@@ -22,14 +22,6 @@ class GamePage extends React.Component {
       dragging: false,
       dragType: null
     };
-
-    this.handleToolChange = this.handleToolChange.bind(this);
-    this.handleTabPress = this.handleTabPress.bind(this);
-    this.handleBackButton = this.handleBackButton.bind(this);
-    this.handleBoardReset = this.handleBoardReset.bind(this);
-    this.handleBoardDragStart = this.handleBoardDragStart.bind(this);
-    this.handleBoardDrag = this.handleBoardDrag.bind(this);
-    this.handleBoardDragEnd = this.handleBoardDragEnd.bind(this);
   }
 
   componentDidMount() {
@@ -89,7 +81,7 @@ class GamePage extends React.Component {
     return solved;
   }
 
-  handleToolChange(newTool) {
+  handleToolChange = (newTool) => {
     if (typeof newTool === 'undefined') {
       if (this.props.currentTool === HIGHLIGHT) {
         newTool = BLOCK;
@@ -98,24 +90,24 @@ class GamePage extends React.Component {
       }
     }
     this.props.dispatch(selectTool(newTool));
-  }
+  };
 
-  handleTabPress(event) {
+  handleTabPress = (event) => {
     if (event.keyCode === 9) {
       event.preventDefault();
       this.handleToolChange();
     }
-  }
+  };
 
-  handleBackButton() {
+  handleBackButton = () => {
     this.props.dispatch(selectPuzzle(0));
-  }
+  };
 
-  handleBoardReset(puzzleId) {
+  handleBoardReset = (puzzleId) => {
     this.props.dispatch(receiveTileStates(puzzleId, {}));
-  }
+  };
 
-  handleBoardDragStart(i, j, tileState, currentTool, puzzleId, event) {
+  handleBoardDragStart = (i, j, tileState, currentTool, puzzleId, event) => {
     event.preventDefault();
 
     let tileChange;
@@ -133,23 +125,23 @@ class GamePage extends React.Component {
       dragging: true,
       dragType: tileChange
     });
-  }
+  };
 
-  handleBoardDrag(i, j, puzzleId, event) {
+  handleBoardDrag = (i, j, puzzleId, event) => {
     event.preventDefault();
     if (this.state.dragging) {
       const tileCoords = `${i},${j}`;
       const tileChange = this.state.dragType;
       this.props.dispatch(modifyTile(puzzleId, tileCoords, tileChange));
     }
-  }
+  };
 
-  handleBoardDragEnd() {
+  handleBoardDragEnd = () => {
     this.setState({
       dragging: false,
       dragType: null
     });
-  }
+  };
 
   render() {
     const { currentPuzzle, currentTool, puzzles, settings } = this.props;
