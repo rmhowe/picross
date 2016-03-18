@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -16,6 +17,8 @@ import ToolSelector from '../components/ToolSelector';
 import Button from '../components/Button';
 
 class GamePage extends React.Component {
+  state: { dragging: boolean, dragType?: any };
+
   constructor(props) {
     super(props);
     this.state = {
