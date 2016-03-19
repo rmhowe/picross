@@ -104,6 +104,7 @@ class GamePage extends React.Component {
 
   handleBackButton = () => {
     this.props.dispatch(selectPuzzle(0));
+    this.props.dispatch(selectTool(HIGHLIGHT));
   };
 
   handleBoardReset = (puzzleId) => {
