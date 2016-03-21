@@ -7,7 +7,7 @@ module.exports = {
 
   output: {
     path: "./dist/js/",
-    publicPath: "/dist/js/",
+    publicPath: "dist/js/",
     filename: "app.min.js"
   },
 
