@@ -47,7 +47,7 @@ export function receivePuzzle(puzzleId, title, rows, columns, solution) {
 export function fetchPuzzle(puzzleId) {
   return (dispatch) => {
     dispatch(requestPuzzle(puzzleId));
-    return fetch(`/puzzles/${puzzleId}.json`)
+    return fetch(`puzzles/${puzzleId}.json`)
       .then((response) => response.json())
       .then((puzzleData) => {
         const { title, rows, columns, solution } = puzzleData;
