@@ -72,6 +72,8 @@ export default class BoardTile extends React.Component {
         onMouseDown={handleBoardDragStart}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
+        onTouchStart={handleBoardDragStart}
+        onTouchMove={handleBoardDrag}
       >
         {hintNumbersRow}
         {hintNumbersColumn}
@@ -85,8 +87,8 @@ BoardTile.propTypes = {
   j: React.PropTypes.number.isRequired,
   tileState: React.PropTypes.string,
   boardSize: React.PropTypes.number.isRequired,
-  rowNumbers: React.PropTypes.array,
-  columnNumbers: React.PropTypes.array,
+  rowNumbers: React.PropTypes.object,
+  columnNumbers: React.PropTypes.object,
   handleBoardDragStart: React.PropTypes.func.isRequired,
   handleBoardDrag: React.PropTypes.func.isRequired
 };

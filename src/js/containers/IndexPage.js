@@ -13,39 +13,30 @@ import Settings from '../components/Settings';
 import { shadeColor } from '../util';
 
 class IndexPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handlePuzzleSelect = this.handlePuzzleSelect.bind(this);
-    this.handleNightModeClick = this.handleNightModeClick.bind(this);
-    this.handleShowColorModal = this.handleShowColorModal.bind(this);
-    this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleAppColorChange = this.handleAppColorChange.bind(this);
-  }
-
-  handlePuzzleSelect(puzzleId) {
+  handlePuzzleSelect = (puzzleId) => {
     this.props.dispatch(selectPuzzle(puzzleId));
-  }
+  };
 
-  handleNightModeClick() {
-    this.props.dispatch(setNightMode(!this.props.settings.nightMode));
-  }
+  handleNightModeClick = () => {
+    this.props.dispatch(setNightMode(!this.props.settings.get('nightMode')));
+  };
 
-  handleShowColorModal(event) {
+  handleShowColorModal = (event) => {
     event.stopPropagation();
     this.props.dispatch(setModal(COLOR_CHANGE));
-  }
+  };
 
-  handleHideModal() {
+  handleHideModal = () => {
     this.props.dispatch(setModal(null));
-  }
+  };
 
-  handleAppColorChange(color) {
+  handleAppColorChange = (color) => {
     this.props.dispatch(setAppColor(color));
-  }
+  };
 
   render() {
     const titleStyle = {
-      color: shadeColor(this.props.settings.appColor, -0.05)
+      color: shadeColor(this.props.settings.get('appColor'), -0.05)
     };
 
     return (
@@ -60,12 +51,12 @@ class IndexPage extends React.Component {
           picross
         </h1>
         <PuzzleSelector
-          appColor={this.props.settings.appColor}
+          appColor={this.props.settings.get('appColor')}
           puzzles={this.props.puzzles}
           handlePuzzleSelect={this.handlePuzzleSelect}
         />
         <Settings
-          appColor={this.props.settings.appColor}
+          appColor={this.props.settings.get('appColor')}
           modal={this.props.modal}
           handleNightModeClick={this.handleNightModeClick}
           handleShowColorModal={this.handleShowColorModal}

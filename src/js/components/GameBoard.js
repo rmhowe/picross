@@ -5,12 +5,12 @@ import BoardTile from './BoardTile';
 export default class GameBoard extends React.Component {
   generateBoard(puzzleId, puzzle, currentTool, handleBoardDragStart, handleBoardDrag) {
     const board = [];
-    const size = puzzle.rows.length;
+    const size = puzzle.get('rows').size;
 
     for (let i = 0; i < size; i++) {
       const row = [];
       for (let j = 0; j < size; j++) {
-        const tileState = puzzle.tileStates[`${i},${j}`];
+        const tileState = puzzle.get('tileStates').get(`${i},${j}`);
         row.push(
           <BoardTile
             i={i}
@@ -18,8 +18,8 @@ export default class GameBoard extends React.Component {
             appColor={this.props.appColor}
             tileState={tileState}
             boardSize={size}
-            rowNumbers={puzzle.rows[i]}
-            columnNumbers={puzzle.columns[j]}
+            rowNumbers={puzzle.get('rows').get(i)}
+            columnNumbers={puzzle.get('columns').get(j)}
             currentTool={currentTool}
             handleBoardDragStart={handleBoardDragStart.bind(this, i, j, tileState, currentTool, puzzleId)}
             handleBoardDrag={handleBoardDrag.bind(this, i, j, puzzleId)}
@@ -34,12 +34,12 @@ export default class GameBoard extends React.Component {
 
   render() {
     const { currentPuzzle, currentTool, puzzles, handleBoardDragStart, handleBoardDrag } = this.props;
-    const puzzle = puzzles[currentPuzzle];
+    const puzzle = puzzles.get(currentPuzzle);
     const board = this.generateBoard(currentPuzzle, puzzle, currentTool, handleBoardDragStart, handleBoardDrag);
     const boardModifier = currentTool === HIGHLIGHT ? "game-board--highlight" : "game-board--block";
 
     let winMessage;
-    if (puzzle.won) {
+    if (puzzle.get('won')) {
       winMessage = <div className="win-message">Congratulations! You solved the puzzle :)</div>;
     }
 

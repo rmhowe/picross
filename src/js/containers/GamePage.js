@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -16,42 +17,38 @@ import ToolSelector from '../components/ToolSelector';
 import Button from '../components/Button';
 
 class GamePage extends React.Component {
+  state: { dragging: boolean, dragType?: any };
+
   constructor(props) {
     super(props);
     this.state = {
       dragging: false,
       dragType: null
     };
-
-    this.handleToolChange = this.handleToolChange.bind(this);
-    this.handleTabPress = this.handleTabPress.bind(this);
-    this.handleBackButton = this.handleBackButton.bind(this);
-    this.handleBoardReset = this.handleBoardReset.bind(this);
-    this.handleBoardDragStart = this.handleBoardDragStart.bind(this);
-    this.handleBoardDrag = this.handleBoardDrag.bind(this);
-    this.handleBoardDragEnd = this.handleBoardDragEnd.bind(this);
   }
 
   componentDidMount() {
     document.addEventListener('mouseup', this.handleBoardDragEnd);
     document.addEventListener('mouseleave', this.handleBoardDragEnd);
+    document.addEventListener('touchend', this.handleBoardDragEnd);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mouseup', this.handleBoardDragEnd);
     document.removeEventListener('mouseleave', this.handleBoardDragEnd);
+    document.removeEventListener('touchend', this.handleBoardDragEnd);
   }
 
   componentDidUpdate(prevProps) {
-    const numPuzzles = Object.keys(prevProps.puzzles).length;
+    const numPuzzles = prevProps.puzzles.size;
     for (let i = 1; i <= numPuzzles; i++) {
-      const prevTileStates = prevProps.puzzles[i].tileStates;
-      const newTileStates = this.props.puzzles[i].tileStates;
+      const prevTileStates = prevProps.puzzles.get(i).get('tileStates');
+      const newTileStates = this.props.puzzles.get(i).get('tileStates');
       if (JSON.stringify(prevTileStates) !== JSON.stringify(newTileStates)) {
         this.props.dispatch(saveTileState(i, newTileStates));
-        const solution = this.props.puzzles[i].solution;
+        const solution = this.props.puzzles.get(i).get('solution');
         const solved = this.checkSolution(solution, newTileStates);
-        if (solved !== this.props.puzzles[i].won) {
+        if (solved !== this.props.puzzles.get(i).get('won')) {
           this.props.dispatch(setWinState(i, solved));
         }
       }
@@ -62,9 +59,9 @@ class GamePage extends React.Component {
     let solutionHighlightedTiles = 0;
     const solutionHighlightedTilesFilled = solution.every((row, i) => {
       return row.every((highlightedSection) => {
-        for (let j = highlightedSection[0]; j <= highlightedSection[1]; j++) {
+        for (let j = highlightedSection.get(0); j <= highlightedSection.get(1); j++) {
           solutionHighlightedTiles++;
-          if (tileStates[`${i},${j}`] !== HIGHLIGHTED) {
+          if (tileStates.get(`${i},${j}`) !== HIGHLIGHTED) {
             return false;
           }
         }
@@ -75,8 +72,8 @@ class GamePage extends React.Component {
     let solved = false;
     if (solutionHighlightedTilesFilled) {
       let userHighlightedTiles = 0;
-      Object.keys(tileStates).forEach((key) => {
-        if (tileStates[key] === HIGHLIGHTED) {
+      tileStates.forEach((tileState) => {
+        if (tileState === HIGHLIGHTED) {
           userHighlightedTiles++;
         }
       });
@@ -89,7 +86,7 @@ class GamePage extends React.Component {
     return solved;
   }
 
-  handleToolChange(newTool) {
+  handleToolChange = (newTool) => {
     if (typeof newTool === 'undefined') {
       if (this.props.currentTool === HIGHLIGHT) {
         newTool = BLOCK;
@@ -98,24 +95,25 @@ class GamePage extends React.Component {
       }
     }
     this.props.dispatch(selectTool(newTool));
-  }
+  };
 
-  handleTabPress(event) {
+  handleTabPress = (event) => {
     if (event.keyCode === 9) {
       event.preventDefault();
       this.handleToolChange();
     }
-  }
+  };
 
-  handleBackButton() {
+  handleBackButton = () => {
     this.props.dispatch(selectPuzzle(0));
-  }
+    this.props.dispatch(selectTool(HIGHLIGHT));
+  };
 
-  handleBoardReset(puzzleId) {
+  handleBoardReset = (puzzleId) => {
     this.props.dispatch(receiveTileStates(puzzleId, {}));
-  }
+  };
 
-  handleBoardDragStart(i, j, tileState, currentTool, puzzleId, event) {
+  handleBoardDragStart = (i, j, tileState, currentTool, puzzleId, event) => {
     event.preventDefault();
 
     let tileChange;
@@ -133,24 +131,23 @@ class GamePage extends React.Component {
       dragging: true,
       dragType: tileChange
     });
-  }
+  };
 
-  handleBoardDrag(i, j, puzzleId, event) {
+  handleBoardDrag = (i, j, puzzleId, event) => {
     event.preventDefault();
-    const { currentPuzzle, currentTool, puzzles } = this.props;
     if (this.state.dragging) {
       const tileCoords = `${i},${j}`;
       const tileChange = this.state.dragType;
       this.props.dispatch(modifyTile(puzzleId, tileCoords, tileChange));
     }
-  }
+  };
 
-  handleBoardDragEnd() {
+  handleBoardDragEnd = () => {
     this.setState({
       dragging: false,
       dragType: null
     });
-  }
+  };
 
   render() {
     const { currentPuzzle, currentTool, puzzles, settings } = this.props;
@@ -158,11 +155,11 @@ class GamePage extends React.Component {
     let toolSelector;
     let backButton;
     let board;
-    if (puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
+    if (puzzles.get(currentPuzzle) && puzzles.get(currentPuzzle).get('rows').size > 0) {
       resetButton = (
         <Button
           className="reset-button"
-          color={settings.appColor}
+          color={this.props.settings.get('appColor')}
           onClick={this.handleBoardReset.bind(this, currentPuzzle)}
         >
           Reset
@@ -171,7 +168,7 @@ class GamePage extends React.Component {
 
       toolSelector = (
         <ToolSelector
-          appColor={this.props.settings.appColor}
+          appColor={this.props.settings.get('appColor')}
           currentTool={currentTool}
           handleToolChange={this.handleToolChange}
         />
@@ -180,7 +177,7 @@ class GamePage extends React.Component {
       backButton = (
         <Button
           className="back-button"
-          color={settings.appColor}
+          color={this.props.settings.get('appColor')}
           onClick={this.handleBackButton}
         >
           Back
@@ -189,7 +186,7 @@ class GamePage extends React.Component {
 
       board = (
         <GameBoard
-          appColor={this.props.settings.appColor}
+          appColor={this.props.settings.get('appColor')}
           currentPuzzle={currentPuzzle}
           currentTool={currentTool}
           puzzles={puzzles}

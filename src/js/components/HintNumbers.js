@@ -31,5 +31,5 @@ export default class HintNumbers extends React.Component {
 
 HintNumbers.propTypes = {
   type: React.PropTypes.string.isRequired,
-  numbers: React.PropTypes.array.isRequired
+  numbers: React.PropTypes.object.isRequired
 };

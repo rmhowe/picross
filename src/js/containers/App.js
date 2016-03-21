@@ -19,14 +19,14 @@ class App extends React.Component {
     const { currentPuzzle, puzzles, settings } = this.props;
 
     let page;
-    if (currentPuzzle && puzzles[currentPuzzle] && puzzles[currentPuzzle].rows.length > 0) {
+    if (currentPuzzle && puzzles.get(currentPuzzle) && puzzles.get(currentPuzzle).get('rows').size > 0) {
       page = <GamePage/>;
     } else {
       page = <IndexPage/>;
     }
 
     let classNames = "app";
-    if (settings.nightMode) {
+    if (settings.get('nightMode')) {
       classNames += " app--night-mode";
     }
 
