@@ -30,11 +30,13 @@ class GamePage extends React.Component {
   componentDidMount() {
     document.addEventListener('mouseup', this.handleBoardDragEnd);
     document.addEventListener('mouseleave', this.handleBoardDragEnd);
+    document.addEventListener('touchend', this.handleBoardDragEnd);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mouseup', this.handleBoardDragEnd);
     document.removeEventListener('mouseleave', this.handleBoardDragEnd);
+    document.removeEventListener('touchend', this.handleBoardDragEnd);
   }
 
   componentDidUpdate(prevProps) {

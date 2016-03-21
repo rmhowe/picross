@@ -40,7 +40,7 @@ export default class BoardTile extends React.Component {
   };
 
   render() {
-    const { i, j, appColor, tileState, boardSize, rowNumbers, columnNumbers, currentTool, handleBoardDragStart } = this.props;
+    const { i, j, appColor, tileState, boardSize, rowNumbers, columnNumbers, currentTool, handleBoardDragStart, handleBoardDrag } = this.props;
     const tileSize = 100 / boardSize;
 
     const style = this.getStyle(tileSize, i, j, appColor);
@@ -72,6 +72,8 @@ export default class BoardTile extends React.Component {
         onMouseDown={handleBoardDragStart}
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
+        onTouchStart={handleBoardDragStart}
+        onTouchMove={handleBoardDrag}
       >
         {hintNumbersRow}
         {hintNumbersColumn}
